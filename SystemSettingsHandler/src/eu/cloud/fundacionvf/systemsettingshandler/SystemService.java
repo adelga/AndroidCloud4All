@@ -24,7 +24,4 @@ public class SystemService extends Service {
 		// TODO Auto-generated method stub
 		return super.onStartCommand(intent, flags, startId);
 	}
-
-	
-	
 }
