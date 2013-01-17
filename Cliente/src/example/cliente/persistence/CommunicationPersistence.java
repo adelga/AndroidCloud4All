@@ -1,6 +1,6 @@
 package example.cliente.persistence;
 
-public class ComunicationPersistence {
+public class CommunicationPersistence {
 
 	final static String ACTION_ORCHESTRATOR= "cloudOrchestrator";
 	final static String ACTION_DEVICE_REPORTER= "cloudDeviceReporter";
