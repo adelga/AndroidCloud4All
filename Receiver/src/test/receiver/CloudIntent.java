@@ -32,8 +32,8 @@ public class CloudIntent extends Intent {
 	public CloudIntent(String action, int idEvento, int idModulo) {
 
 		this.setAction(action);
-		this.putExtra("idEvent", idEvento);
-		this.putExtra("idModule", idModulo);
+		this.putExtra(EXTRA_EVENT, idEvento);
+		this.putExtra(EXTRA_MODULE, idModulo);
 
 	}
 
@@ -41,7 +41,7 @@ public class CloudIntent extends Intent {
 	 * Return the event identifier, if there are any error return 0
 	 */
 	public int getIdEvent() {
-		return this.getIntExtra("idEvent", 0);
+		return this.getIntExtra(EXTRA_EVENT, 0);
 
 	}
 
@@ -49,7 +49,7 @@ public class CloudIntent extends Intent {
 	 * Return the origin module identifier, if there are any error return 0
 	 */
 	public int getIdModule() {
-		return this.getIntExtra("idEvent", 0);
+		return this.getIntExtra(EXTRA_EVENT, 0);
 
 	}
 
