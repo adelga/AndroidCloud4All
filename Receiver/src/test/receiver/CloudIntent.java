@@ -12,6 +12,7 @@ public class CloudIntent extends Intent {
 	private static final String EXTRA_EVENT = "idEvent";
 	private static final String EXTRA_MODULE = "idModule";
 	public String params;
+	
 	private JSONObject json;
 
 	public static CloudIntent intentToCloudIntent(Intent inte) {
@@ -30,10 +31,12 @@ public class CloudIntent extends Intent {
 	}
 
 	public CloudIntent(String action, int idEvento, int idModulo) {
-	
-		this.setAction(action);
+		super(action);
+		this.setFlags(FLAG_INCLUDE_STOPPED_PACKAGES| Intent.FLAG_DEBUG_LOG_RESOLUTION | Intent.FLAG_ACTIVITY_NEW_TASK);
+//		this.setAction(action);
 		this.putExtra(EXTRA_EVENT, idEvento);
 		this.putExtra(EXTRA_MODULE, idModulo);
+		
 
 	}
 
@@ -71,6 +74,7 @@ public class CloudIntent extends Intent {
 
 	private void setStringParams(String params) {
 		this.params = params;
+		Log.d("CLOUDINTENT", "params: " + params);
 
 	}
 
@@ -103,5 +107,49 @@ public class CloudIntent extends Intent {
 				.put(jsonObjectNewData);
 
 	}
+	
+	public String[] getArrayIds() throws JSONException {
+
+		String[] arrayIds = null;
+
+		JSONArray jsonArray = json.getJSONObject("jsonfile").getJSONArray(
+				"params");
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+
+			JSONObject result = jsonArray.getJSONObject(i);
+
+			arrayIds[i] = result.getString("id");
+
+		}
+
+		return arrayIds;
+
+	}
+
+	public String getValue(String id) throws JSONException {
+
+		String value;
+
+		JSONArray jsonArray = json.getJSONObject("jsonfile").getJSONArray(
+				"params");
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+
+			if (id.equals(jsonArray.getJSONObject(i).getString("id"))) {
+
+				value = jsonArray.getJSONObject(i).getString("value");
+
+				return value;
+			}
+		}
+		return null;
+
+	}
+	
+	
+	
+	
+	
 
 }

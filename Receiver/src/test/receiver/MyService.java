@@ -32,7 +32,8 @@ public class MyService extends Service{
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		// TODO Auto-generated method stub
 		Log.e("Receiver", "startComand");	
-		CloudIntent cloudinfo =(CloudIntent) intent;
+		CloudIntent cloudinfo= CloudIntent.intentToCloudIntent(intent);
+		
 		Log.e("Receiver", "idevento: " + cloudinfo.getIdEvent());
 		return super.onStartCommand(intent, flags, startId);
 	}
