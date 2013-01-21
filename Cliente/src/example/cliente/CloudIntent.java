@@ -3,6 +3,7 @@ package example.cliente;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONStringer;
 
 import android.content.Intent;
 import android.util.Log;
@@ -15,7 +16,7 @@ public class CloudIntent extends Intent {
 	
 	private JSONObject json;
 
-	public static CloudIntent intentToCloudIntent(Intent inte) {
+	public static CloudIntent intentToCloudIntent(Intent inte) throws Exception {
 		int evento = inte.getIntExtra(EXTRA_EVENT, 0);
 		int modulo = inte.getIntExtra(EXTRA_MODULE, 0);
 		CloudIntent i;
@@ -68,13 +69,21 @@ public class CloudIntent extends Intent {
 		}
 		params = json.toString();
 		this.putExtra(EXTRA_PARAMS, params);
-		Log.e("JSON", "String: " + json.toString());
 
 	}
 
-	private void setStringParams(String params) {
-		this.params = params;
-		Log.d("CLOUDINTENT", "params: " + params);
+	private void setStringParams(String params) throws JSONException {
+		
+		
+		JSONObject str= new JSONObject(params);
+		
+		JSONArray root =str.getJSONObject("jsonfile").getJSONArray("params");
+		
+		for(int i=0;i<root.length();i++){
+			JSONObject obj= root.getJSONObject(i);
+			this.setParams(obj.getString("id"), obj.getString("value"));
+		
+		}
 
 	}
 
@@ -92,6 +101,7 @@ public class CloudIntent extends Intent {
 
 		jsonObjectParams.put("params", jsonArray);
 		json.put("jsonfile", jsonObjectParams);
+		
 
 	}
 
@@ -110,11 +120,11 @@ public class CloudIntent extends Intent {
 	
 	public String[] getArrayIds() throws JSONException {
 
-		String[] arrayIds = null;
+		
 
 		JSONArray jsonArray = json.getJSONObject("jsonfile").getJSONArray(
 				"params");
-
+		String[] arrayIds = new String[jsonArray.length()];
 		for (int i = 0; i < jsonArray.length(); i++) {
 
 			JSONObject result = jsonArray.getJSONObject(i);
@@ -122,7 +132,8 @@ public class CloudIntent extends Intent {
 			arrayIds[i] = result.getString("id");
 
 		}
-
+		
+		
 		return arrayIds;
 
 	}

@@ -27,7 +27,7 @@ public class MainActivity extends Activity {
 
 					intent.setParams("Parametro 1", "probando");
 
-					intent.setParams("Parameytro2", "probando");
+					intent.setParams("Parametro2", "probando");
 					sendBroadcast(intent);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
