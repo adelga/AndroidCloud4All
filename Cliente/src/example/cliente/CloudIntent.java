@@ -32,10 +32,11 @@ public class CloudIntent extends Intent {
 
 	public CloudIntent(String action, int idEvento, int idModulo) {
 		super(action);
+		this.setFlags(FLAG_INCLUDE_STOPPED_PACKAGES| Intent.FLAG_DEBUG_LOG_RESOLUTION | Intent.FLAG_ACTIVITY_NEW_TASK);
 //		this.setAction(action);
-//		this.putExtra(EXTRA_EVENT, idEvento);
-//		this.putExtra(EXTRA_MODULE, idModulo);
-		this.setFlags(Intent.FLAG_DEBUG_LOG_RESOLUTION);
+		this.putExtra(EXTRA_EVENT, idEvento);
+		this.putExtra(EXTRA_MODULE, idModulo);
+		
 
 	}
 
@@ -73,6 +74,7 @@ public class CloudIntent extends Intent {
 
 	private void setStringParams(String params) {
 		this.params = params;
+		Log.d("CLOUDINTENT", "params: " + params);
 
 	}
 

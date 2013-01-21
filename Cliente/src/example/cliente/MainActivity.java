@@ -25,9 +25,9 @@ public class MainActivity extends Activity {
 				try {
 					CloudIntent intent = new CloudIntent(CommunicationPersistence.ACTION_SYSTEM_SETTING_HANDLER,CommunicationPersistence.EVENT_CONFIGURE_SYSTEM_SETTINGS,CommunicationPersistence.MODULE_ORCHESTRATOR);
 
-//					intent.setParams("Parametro 1", "probando");
-//
-//					intent.setParams("Parameytro2", "probando");
+					intent.setParams("Parametro 1", "probando");
+
+					intent.setParams("Parameytro2", "probando");
 					sendBroadcast(intent);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
