@@ -11,6 +11,7 @@ public class CommunicationPersistence {
 	public final static int EVENT_CONFIGURE_SYSTEM_SETTINGS = 11;
 	
 	public final static int MODULE_ORCHESTRATOR = 1;
+	public final static int MODULE_DEVICE_REPORTER = 2;
 	
 	
 }
