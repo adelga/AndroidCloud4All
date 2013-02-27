@@ -112,7 +112,6 @@ public class CloudIntent extends Intent {
 
 		jsonObjectNewData.put("id", id);
 		jsonObjectNewData.put("value", value);
-
 		json.getJSONObject("jsonfile").getJSONArray("params")
 				.put(jsonObjectNewData);
 
