@@ -1,3 +1,5 @@
+package test.receiver.persistence;
+
 /*
 CommunicationPersistence class
 This class represents a rule condition for Communication Persistence params.	
@@ -57,7 +59,7 @@ public class CommunicationPersistence {
 	
 	public final static int EVENT_USER_DETECTED = 140;
 	
-	public final static int EVENT_USER_LOGOUT = ;141
+	public final static int EVENT_USER_LOGOUT = 141;
 	
 	public final static int EVENT_STORAGE_REPORTER = 225;
 	public final static int EVENT_STORAGE_REPORTER_RESPONSE = 226;

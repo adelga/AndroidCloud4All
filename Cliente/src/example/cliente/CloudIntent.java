@@ -1,3 +1,23 @@
+/*
+CloudIntent class
+This class represents a Intent with extends funcionality.	
+
+Copyright (c) 2013, Vodafone Spain Foundation
+All rights reserved.
+
+The research leading to these results has received funding from the European Union's Seventh Framework Programme (FP7/2007-2013) under grant agreement n° 289016
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+ * Neither the name of Vodafone Spain Foundation nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+*/
+
+
 package example.cliente;
 
 import org.json.JSONArray;
@@ -16,6 +36,9 @@ public class CloudIntent extends Intent {
 	
 	private JSONObject json;
 
+	/*
+	 * Static method to transform a normal received intent to a Specific Cloudintent
+	 */
 	public static CloudIntent intentToCloudIntent(Intent inte) throws Exception {
 		int evento = inte.getIntExtra(EXTRA_EVENT, 0);
 		int modulo = inte.getIntExtra(EXTRA_MODULE, 0);
@@ -30,7 +53,9 @@ public class CloudIntent extends Intent {
 		return i;
 
 	}
-
+	/*
+	 * Constructor, need the action(Who should listen), the idEvent(What should do) and the idModulo(Who am I, the Intent origin)
+	 */
 	public CloudIntent(String action, int idEvento, int idModulo) {
 		super(action);
 		this.setFlags(FLAG_INCLUDE_STOPPED_PACKAGES| Intent.FLAG_DEBUG_LOG_RESOLUTION | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -57,6 +82,9 @@ public class CloudIntent extends Intent {
 
 	}
 
+	/*
+	 * To add a new Param (Key/value)
+	 */
 	public void setParams(String id, String value) throws JSONException {
 
 		if (json == null) {
@@ -118,6 +146,9 @@ public class CloudIntent extends Intent {
 
 	}
 	
+	/*
+	 * Return the keys IDs list
+	 */
 	public String[] getArrayIds() throws JSONException {
 
 		
@@ -138,6 +169,9 @@ public class CloudIntent extends Intent {
 
 	}
 
+	/*
+	 * Return an specific String value for a specific key
+	 */
 	public String getValue(String id) throws JSONException {
 
 		String value;
