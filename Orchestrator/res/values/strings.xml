@@ -1,0 +1,9 @@
+<resources>
+
+    <string name="app_name">Orchestrator</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_controlador_eventos">ControladorEventos</string>
+    <string name="title_activity_cloud_receiver">CloudReceiver</string>
+
+</resources>
