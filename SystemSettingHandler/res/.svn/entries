@@ -1,0 +1,52 @@
+10
+
+dir
+21
+http://www.fundacionvf.es/svn/CLOUD/SystemSettingHandler/res
+http://www.fundacionvf.es/svn/CLOUD
+
+
+
+2013-03-11T09:49:47.031250Z
+21
+adelga38
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+69d48446-dbac-da44-bb99-a7c6709b45a8
+
+drawable-hdpi
+dir
+
+drawable-ldpi
+dir
+
+drawable-mdpi
+dir
+
+drawable-xhdpi
+dir
+
+layout
+dir
+
+values
+dir
+
+values-v11
+dir
+
+values-v14
+dir
+

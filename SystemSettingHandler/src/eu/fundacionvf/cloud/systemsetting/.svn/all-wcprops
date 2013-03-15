@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/CLOUD/!svn/ver/21/SystemSettingHandler/src/eu/fundacionvf/cloud/systemsetting
+END
+SettingHandlerService.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/CLOUD/!svn/ver/25/SystemSettingHandler/src/eu/fundacionvf/cloud/systemsetting/SettingHandlerService.java
+END
+SettingHandlerReceiver.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/CLOUD/!svn/ver/16/SystemSettingHandler/src/eu/fundacionvf/cloud/systemsetting/SettingHandlerReceiver.java
+END
+DummyActivity.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/CLOUD/!svn/ver/22/SystemSettingHandler/src/eu/fundacionvf/cloud/systemsetting/DummyActivity.java
+END
+CloudIntent.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/CLOUD/!svn/ver/16/SystemSettingHandler/src/eu/fundacionvf/cloud/systemsetting/CloudIntent.java
+END
