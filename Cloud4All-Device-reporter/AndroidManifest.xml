@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.cloud4all.devicereporter"
+    android:versionCode="1"
+    android:versionName="1.0" >
+    <!--
+<uses-permission android:name="android.permission.SET_DEBUG_APP"></uses-permission>
+--> 
+
+<uses-permission android:name="android.permission.READ_PHONE_STATE"> </uses-permission>
+<uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"> </uses-permission>
+<uses-permission android:name="android.permission.CHANGE_WIFI_STATE"> </uses-permission>
+<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+<uses-permission android:name="android.permission.INTERNET"> </uses-permission>
+    <uses-permission        android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" /> 
+        <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-sdk
+        android:minSdkVersion="10"
+        android:targetSdkVersion="17" />
+        <uses-feature android:name="android.hardware.wifi" />
+          <uses-feature android:name="android.hardware.camera" />
+ <uses-feature android:name="android.hardware.camera.autofocus" />
+        
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.cloud4all.devicereporter.Viewer"
+            android:label="@string/app_name" >
+            
+          
+        
+            <intent-filter>
+            <!--
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                -->
+            </intent-filter>
+        </activity>
+        <!-- Se ha cambiado el nombre del receiver haciendolo coincidir con el nombre correspondiente a la clase del
+        BroadCast Reciever. También hemos sacado el receiver fuera del activity.  -->
+    <receiver android:name="com.cloud4all.devicereporter.DeviceReporterReceiver" >
+            <intent-filter>
+                <action android:name="cloudDeviceReporter" />
+            </intent-filter>
+        </receiver>
+            <service android:name="DeviceReporterService"
+             android:label="DeviceReporter">
+           </service>              
+    </application>
+
+</manifest>
