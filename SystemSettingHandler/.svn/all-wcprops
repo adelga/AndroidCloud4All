@@ -1,17 +1,41 @@
 K 25
 svn:wc:ra_dav:version-url
 V 43
-/svn/CLOUD/!svn/ver/21/SystemSettingHandler
+/svn/CLOUD/!svn/ver/27/SystemSettingHandler
+END
+proguard-project.txt
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/CLOUD/!svn/ver/28/SystemSettingHandler/proguard-project.txt
 END
 AndroidManifest.xml
 K 25
 svn:wc:ra_dav:version-url
 V 63
-/svn/CLOUD/!svn/ver/24/SystemSettingHandler/AndroidManifest.xml
+/svn/CLOUD/!svn/ver/28/SystemSettingHandler/AndroidManifest.xml
 END
 ic_launcher-web.png
 K 25
 svn:wc:ra_dav:version-url
 V 63
 /svn/CLOUD/!svn/ver/19/SystemSettingHandler/ic_launcher-web.png
+END
+project.properties
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/CLOUD/!svn/ver/28/SystemSettingHandler/project.properties
+END
+.project
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/CLOUD/!svn/ver/28/SystemSettingHandler/.project
+END
+.classpath
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/CLOUD/!svn/ver/28/SystemSettingHandler/.classpath
 END

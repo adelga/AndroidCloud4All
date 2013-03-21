@@ -1,15 +1,15 @@
 10
 
 dir
-21
+27
 http://www.fundacionvf.es/svn/CLOUD/SystemSettingHandler/src/eu/fundacionvf/cloud/systemsetting
 http://www.fundacionvf.es/svn/CLOUD
 
 
 
-2013-03-11T09:49:47.031250Z
-21
-adelga38
+2013-03-15T11:55:31.531250Z
+27
+mandisk
 
 
 svn:special svn:externals svn:needs-lock
@@ -28,14 +28,14 @@ svn:special svn:externals svn:needs-lock
 
 CloudIntent.java
 file
+28
 
 
 
-
-2013-02-20T09:41:54.440000Z
-cfb23078fcd27f80de3551bfbf208952
-2013-03-08T12:03:36.484375Z
-16
+2013-03-21T09:17:19.145000Z
+4f45f71bb525369ff3ce236d3126e15e
+2013-03-21T10:21:56.703125Z
+28
 adelga38
 has-props
 
@@ -58,18 +58,18 @@ has-props
 
 
 
-3616
+5365
 
 DummyActivity.java
 file
-22
+28
 
 
 
-2013-03-13T08:30:51.085000Z
-cd435f23e7d458c5eaf739f393ee8006
-2013-03-13T08:27:44.578125Z
-22
+2013-03-21T09:18:12.349000Z
+a57cebf4f7431525bc12e9900e4f5b44
+2013-03-21T10:21:56.703125Z
+28
 adelga38
 has-props
 
@@ -92,18 +92,18 @@ has-props
 
 
 
-895
+2540
 
 SettingHandlerReceiver.java
 file
+28
 
 
 
-
-2013-02-20T07:53:39.967000Z
-78e692e13b1810f95efb9a28f04d51ea
-2013-03-08T12:03:36.484375Z
-16
+2013-03-21T09:21:48.391000Z
+7f01fe62f1403e6465ad16f92a105e58
+2013-03-21T10:21:56.703125Z
+28
 adelga38
 has-props
 
@@ -126,18 +126,18 @@ has-props
 
 
 
-820
+2396
 
 SettingHandlerService.java
 file
-25
+28
 
 
 
-2013-03-15T10:00:02.254000Z
-35409c2f7d257bf7ccaf2fe940fbb8a4
-2013-03-15T09:56:21.359375Z
-25
+2013-03-21T10:21:23.971000Z
+179d6df2a8076fbaac1059ff95719470
+2013-03-21T10:21:56.703125Z
+28
 adelga38
 has-props
 
@@ -160,7 +160,7 @@ has-props
 
 
 
-3773
+5875
 
 persistence
 dir

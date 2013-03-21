@@ -1,15 +1,15 @@
 10
 
 dir
-21
+27
 http://www.fundacionvf.es/svn/CLOUD/SystemSettingHandler
 http://www.fundacionvf.es/svn/CLOUD
 
 
 
-2013-03-11T09:49:47.031250Z
-21
-adelga38
+2013-03-15T11:55:31.531250Z
+27
+mandisk
 
 
 svn:special svn:externals svn:needs-lock
@@ -26,17 +26,17 @@ svn:special svn:externals svn:needs-lock
 
 69d48446-dbac-da44-bb99-a7c6709b45a8
 
-AndroidManifest.xml
+.classpath
 file
-24
+28
 
 
 
-2013-03-15T09:58:35.649000Z
-afab207ff7a8f2db17197ca4abe824bf
-2013-03-15T08:08:50.484375Z
-24
-mandisk
+2013-03-15T14:03:57.947000Z
+190f666332cc550efd902a01024e2762
+2013-03-21T10:21:56.703125Z
+28
+adelga38
 has-props
 
 
@@ -58,9 +58,83 @@ has-props
 
 
 
-1575
+364
+
+.project
+file
+28
+
+
+
+2013-03-15T14:03:57.611000Z
+95dd03501abe0278308f374639ad49b3
+2013-03-21T10:21:56.703125Z
+28
+adelga38
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+856
+
+AndroidManifest.xml
+file
+28
+
+
+
+2013-03-15T14:03:57.561000Z
+20f465e0e5ab5d647afa9d716d80b207
+2013-03-21T10:21:56.703125Z
+28
+adelga38
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+496
 
 assets
+dir
+
+bin
+dir
+
+gen
 dir
 
 ic_launcher-web.png
@@ -69,7 +143,7 @@ file
 
 
 
-2013-01-10T12:08:44.563000Z
+2013-03-15T14:03:57.476000Z
 bbfccf9428826a4c79b33b33d2434db8
 2013-03-08T12:04:23.687500Z
 19
@@ -96,6 +170,77 @@ has-props
 
 
 2924
+
+libs
+dir
+
+proguard-project.txt
+file
+28
+
+
+
+2013-03-15T14:03:57.600000Z
+18bfe77c342b4698f1cef19cf8d918e2
+2013-03-21T10:21:56.703125Z
+28
+adelga38
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+781
+
+project.properties
+file
+28
+
+
+
+2013-03-15T14:03:57.564000Z
+9c57dcdf382c16ec1e6ff4d497fa3a84
+2013-03-21T10:21:56.703125Z
+28
+adelga38
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+563
 
 res
 dir
