@@ -1,0 +1,84 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    tools:context=".Viewer" >
+
+        
+
+
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal" >
+
+    <Button android:id="@+id/BtnDownBrightness"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:onClick="pressBrightnessDown"
+    android:text="@string/button_downbrightness"
+        android:focusable="true"     />
+        
+        <TextView android:id="@+id/brightnesslabel"
+        android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:text="0"
+        android:focusable="true"      
+        />
+        
+        <Button android:id="@+id/BtnUpBrightness"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:onClick="pressBrightnessUp"
+    android:text="@string/button_upbrightness"
+        android:focusable="true"     />
+</LinearLayout>
+
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal" >
+
+    <Button android:id="@+id/BtnDownNoise"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:onClick="pressNoiseDown"
+    android:text="@string/button_downnoise"
+        android:focusable="true"     />
+        
+        <TextView android:id="@+id/noiselabel"
+        android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:text="0"
+        android:focusable="true"      
+        />
+        
+        <Button android:id="@+id/BtnUpNoise"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:onClick="pressNoiseUp"
+    android:text="@string/button_upnoise"
+        android:focusable="true"     />
+</LinearLayout>
+
+
+
+
+    <TextView
+    android:id="@+id/monitorlabel" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:minLines="8"
+        android:text="@string/start_message"
+            android:focusable="true" />
+            
+            <Button android:id="@+id/BtnSend"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:onClick="pressSend"
+    android:text="@string/button_send"
+        android:focusable="true"     />
+</LinearLayout>
