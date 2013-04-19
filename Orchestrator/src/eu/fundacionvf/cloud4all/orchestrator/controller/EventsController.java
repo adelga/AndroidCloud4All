@@ -15,19 +15,145 @@ Redistribution and use in source and binary forms, with or without modification,
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-*/
+ */
 package eu.fundacionvf.cloud4all.orchestrator.controller;
 
-import eu.fundacionvf.cloud4all.orchestrator.util.CloudIntent;
-import eu.fundacionvf.cloud4all.orchestrator.util.CommunicationPersistence;
-import android.os.IBinder;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.IBinder;
+import android.os.Looper;
+import android.os.Message;
+import android.os.Process;
 import android.util.Log;
+import eu.fundacionvf.cloud4all.orchestrator.persistence.Action;
+import eu.fundacionvf.cloud4all.orchestrator.persistence.Param;
+import eu.fundacionvf.cloud4all.orchestrator.persistence.Persistence;
+import eu.fundacionvf.cloud4all.orchestrator.persistence.PersistenceXML;
+import eu.fundacionvf.cloud4all.orchestrator.persistence.Response;
+import eu.fundacionvf.cloud4all.orchestrator.persistence.Session;
+import eu.fundacionvf.cloud4all.orchestrator.util.CloudIntent;
 
 public class EventsController extends Service {
-
+	
 	private static final String TAG = "CLOUD4ALL";
+	private static final String ZERO_STRING = "0";
+	private static final int ZERO_INTEGER = 0;
+	PersistenceXML pXML;
+	Persistence persistence;
+	Session session;
+	private int idAction;
+    
+	//VARIABLES FOR HANDLER
+	private Looper mServiceLooper;
+	private ServiceHandler mServiceHandler;
+
+	// Handler that receives messages from the thread
+	private final class ServiceHandler extends Handler {
+		public ServiceHandler(Looper looper) {
+			super(looper);
+		}
+
+		@Override
+		public void handleMessage(Message msg) {
+			onHandleIntent((Intent) msg.obj);
+			// Stop the service using the startId, so that we don't stop
+			// the service in the middle of handling another job
+			stopSelf(msg.arg1);
+
+		}
+
+		//Method to manage the intents
+		protected void onHandleIntent(Intent intent) {
+			// TODO Auto-generated method stub
+			try {
+				pXML = new PersistenceXML();
+				persistence = pXML.getPersistence();
+				session = pXML.getSession();
+				CloudIntent cloudinfo = CloudIntent.intentToCloudIntent(intent);
+				int idEvent = cloudinfo.getIdEvent();
+				int idProcess = persistence.findIdProccessByIdTrigger(idEvent);
+		
+				// CASE REQUEST
+				if (persistence.isRequest(idEvent)) {
+					Log.i(TAG, "Request event...");
+					if (!session.haveProcesses()) {
+						session.newSession();
+						session.setProcess(persistence.getProcessByIdProcess(idProcess), 0);
+						for (int i = 0; i < session.getProcesses().length; i++) {
+							for (int j = 0; j < session.getProcesses()[i].getListActions().length; j++) {
+								session.getProcesses()[i].getListActions()[j].response = new Response(ZERO_INTEGER, ZERO_INTEGER, ZERO_STRING);
+							}
+						}
+
+						pXML.writeXML(session);
+						// En este caso deberia ejecutar el paso de variables
+						startFirstAction(persistence.getActionsByIdTrigger(idEvent),idProcess);
+					} else {
+						if (session.processExist(idProcess)) {
+							startFirstAction(persistence.getActionsByIdTrigger(idEvent),idProcess);
+						} else {
+							session.addProcess(persistence.getProcessByIdProcess(idProcess));
+							pXML.writeXML(session);
+							startFirstAction(persistence.getActionsByIdTrigger(idEvent),idProcess);
+						}
+					}
+				}
+				// CASE RESPONSE
+				else {
+					Log.i(TAG, "Response Event");
+					// Store the params received for the origin module
+					session.addParameters(cloudinfo);
+					pXML.writeXML(session);
+					startNextAction(cloudinfo.getIdAction());
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+	}
+
+	@Override
+	public void onCreate() {
+		// TODO Auto-generated method stub
+		
+		// Start up the thread running the service. Note that we create a
+		// separate thread because the service normally runs in the process's
+		// main thread, which we don't want to block. We also make it
+		// background priority so CPU-intensive work will not disrupt our UI.
+		
+		HandlerThread thread = new HandlerThread("ServiceStartArguments",Process.THREAD_PRIORITY_BACKGROUND);
+		thread.start();
+
+		// Get the HandlerThread's Looper and use it for our Handler
+		mServiceLooper = thread.getLooper();
+		mServiceHandler = new ServiceHandler(mServiceLooper);
+
+		//Create the random idAction
+		int M = 1;
+		int N = 100;
+		idAction = (int) Math.floor(Math.random() * (N - M + 1) + M); // Valor entre M y N, ambos incluidos.
+
+	}
+
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		// TODO Auto-generated method stub
+
+		// For each start request, send a message to start a job and deliver the
+		// start ID so we know which request we're stopping when we finish the
+		// job
+		
+		Message msg = mServiceHandler.obtainMessage();
+		msg.arg1 = startId;
+		msg.obj = intent;
+		mServiceHandler.sendMessage(msg);
+
+		// If we get killed, after returning from here, restart
+		return START_STICKY;
+	}
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -37,84 +163,27 @@ public class EventsController extends Service {
 	}
 
 	@Override
-	public void onCreate() {
-		// TODO Auto-generated method stub
-		super.onCreate();
+	public void onStart(Intent intent, int startId) {
+
 	}
 
 	@Override
 	public void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
+		Log.i(TAG, "Se realiza un onDestroy");
 	}
 
-	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
+	private void startFirstAction(Action[] actions, int idProcess) {
 		// TODO Auto-generated method stub
+		int indexProcess = session.indexOfProcess(idProcess);
 		try {
-			Log.i(TAG, "Orchestrator startComand");
-			CloudIntent cloudinfo = CloudIntent.intentToCloudIntent(intent);
-			int event = cloudinfo.getIdEvent();
-			Log.i(TAG, "Evento recibido:" + event);
-			switch (event) {
-			case CommunicationPersistence.EVENT_CONFIGURE_SYSTEM_SETTINGS:
-				Log.i(TAG, "Configurar Controller");
-				configuration(cloudinfo);
-				break;
-			case CommunicationPersistence.EVENT_RESTORE_SYSTEM_SETTINGS:
-				Log.i(TAG, "Restore Setting Handler");
-				restore(cloudinfo);
-				break;
-			case CommunicationPersistence.EVENT_GET_FEATURES:
-				Log.i(TAG, "Get Features - Device Reporter");
-				getFeatures(cloudinfo);
-				break;
-			case CommunicationPersistence.EVENT_GET_FEATURES_RESPONSE:
-				Log.i(TAG, "Device Reporter Response");
-				getConfiguration(cloudinfo);
-				break;
-			case CommunicationPersistence.EVENT_GET_CONFIGURATION:
-				Log.i(TAG, "MiniMatch Maker access...");
-				getConfiguration(cloudinfo);
-				break;
-			case CommunicationPersistence.EVENT_GET_CONFIGURATION_RESPONSE:
-				Log.i(TAG, "Response from MinimatchMaker");
-				getConfigurationResponse(cloudinfo);
-				break;
-			case CommunicationPersistence.EVENT_USER_DETECTED:
-				Log.i(TAG,"Event received from NFC");
-				//Launch Device Reporter
-				getFeatures(cloudinfo);
-				break;
-			default:
-				Log.i(TAG, "No hace nada");
-				break;
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return super.onStartCommand(intent, flags, startId);
-	}
-
-	private void configuration(CloudIntent cloudinfo) {
-		// TODO Auto-generated method stub
-		String[] listaids;
-
-		try {
-			Log.i("CLOUD4ALL", "Botón pulsado");
-			CloudIntent intent = new CloudIntent(
-					CommunicationPersistence.ACTION_SYSTEM_SETTING_HANDLER,
-					CommunicationPersistence.EVENT_CONFIGURE_SYSTEM_SETTINGS,
-					CommunicationPersistence.MODULE_ORCHESTRATOR);
-
-			listaids = cloudinfo.getArrayIds();
-
-			for (int i = 0; i < listaids.length; i++) {
-				Log.i(TAG, "Index:" + i);
-				Log.i(TAG, "Orchestrator. Parametros: id: " + listaids[i]
-						+ ", value: " + cloudinfo.getValue(listaids[i]));
-				intent.setParams(listaids[i], cloudinfo.getValue(listaids[i]));
+			idAction++;
+			Log.i(TAG, "idaction to send:" + idAction);
+			session.getProcesses()[indexProcess].getListActions()[0].setIdAction(idAction);
+			pXML.writeXML(session);
+			CloudIntent intent = new CloudIntent(actions[0].getRequest().getIdModule(), actions[0].getRequest().getIdEvent(),idAction);
+			Param[] params = actions[0].getRequest().getParams();
+			for (int j = 0; j < params.length; j++) {
+				intent.setParams(params[j].getKey(), params[j].getValue());
 			}
 			sendBroadcast(intent);
 		} catch (Exception e) {
@@ -123,85 +192,32 @@ public class EventsController extends Service {
 		}
 	}
 
-	private void restore(CloudIntent cloudinfo) {
+	private void startNextAction(int actionRec) {
 		// TODO Auto-generated method stub
-		String[] listaids;
-		try {
-			Log.i("CLOUD4ALL", "Botón pulsado");
-			CloudIntent intent = new CloudIntent(
-					CommunicationPersistence.ACTION_SYSTEM_SETTING_HANDLER,
-					CommunicationPersistence.EVENT_RESTORE_SYSTEM_SETTINGS,
-					CommunicationPersistence.MODULE_ORCHESTRATOR);
-			listaids = cloudinfo.getArrayIds();
-
-			for (int i = 0; i < listaids.length; i++) {
-				Log.i(TAG, "Index:" + i);
-				Log.i(TAG, "Orchestrator. Parametros: id: " + listaids[i]
-						+ ", value: " + cloudinfo.getValue(listaids[i]));
-				intent.setParams(listaids[i], cloudinfo.getValue(listaids[i]));
+		Log.i(TAG, "idaction to send:" + actionRec);
+		int idProcess = session.getIdProcessByIdAction(actionRec);
+		if (session.nextActionExist(actionRec)) {
+			Log.i(TAG, "Start next action");
+			Action[] actions = session.getActionsByIdProcess(actionRec);
+			int indexProcess = session.indexOfProcess(actionRec);
+			int indexAction = session.indexOfAction(actionRec);
+			try {
+				idAction++;
+				session.getProcesses()[indexProcess].getListActions()[indexAction + 1].setIdAction(idAction);
+				pXML.writeXML(session);
+				CloudIntent intent = new CloudIntent(actions[indexAction + 1].getRequest().getIdModule(), actions[indexAction + 1].getRequest().getIdEvent(), idAction);
+				Param[] params = actions[indexAction + 1].getRequest().getParams();
+				for (int j = 0; j < params.length; j++) {
+					intent.setParams(params[j].getKey(), params[j].getValue());
+				}
+				sendBroadcast(intent);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			sendBroadcast(intent);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 
-	private void getFeatures(CloudIntent cloudinfo) {
-		try {
-			CloudIntent intent = new CloudIntent(
-					CommunicationPersistence.ACTION_DEVICE_REPORTER,
-					CommunicationPersistence.EVENT_GET_FEATURES,
-					CommunicationPersistence.MODULE_ORCHESTRATOR);
-
-			intent.setParams("ReporterType", "ROOT");
-
-			sendBroadcast(intent);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	private void getConfiguration(CloudIntent cloudinfo){
-		try {
-			CloudIntent intent = new CloudIntent(
-					CommunicationPersistence.ACTION_MINI_MATCH_MAKER,
-					CommunicationPersistence.EVENT_GET_CONFIGURATION,
-					CommunicationPersistence.MODULE_ORCHESTRATOR);
-
-			intent.setParams("ReporterType", "ROOT");
-
-			sendBroadcast(intent);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-    private void getConfigurationResponse(CloudIntent cloudinfo){
-    	String[] listaids;
-
-			Log.i("CLOUD4ALL", "Botón pulsado");
-			CloudIntent intent = new CloudIntent(
-					CommunicationPersistence.ACTION_SYSTEM_SETTING_HANDLER,
-					CommunicationPersistence.EVENT_CONFIGURE_SYSTEM_SETTINGS,
-					CommunicationPersistence.MODULE_ORCHESTRATOR);
-
-		try{
-			listaids = cloudinfo.getArrayIds();
-
-			for (int i = 0; i < listaids.length; i++) {
-				Log.i(TAG, "Index:" + i);
-				Log.i(TAG, "Orchestrator. Parametros: id: " + listaids[i]
-						+ ", value: " + cloudinfo.getValue(listaids[i]));
-				intent.setParams(listaids[i], cloudinfo.getValue(listaids[i]));
-			}
-			sendBroadcast(intent);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
 	@Override
 	public boolean onUnbind(Intent intent) {
 		// TODO Auto-generated method stub
