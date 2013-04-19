@@ -15,7 +15,7 @@ Redistribution and use in source and binary forms, with or without modification,
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-*/
+ */
 package eu.fundacionvf.cloud4all.orchestrator.util;
 
 import org.json.JSONArray;
@@ -27,33 +27,31 @@ import android.content.Intent;
 public class CloudIntent extends Intent {
 	private static final String EXTRA_PARAMS = "params";
 	private static final String EXTRA_EVENT = "idEvent";
-	private static final String EXTRA_MODULE = "idModule";
+	private static final String EXTRA_ACTION = "idAction";
 	public String params;
 
 	private JSONObject json;
 
 	public static CloudIntent intentToCloudIntent(Intent inte) throws Exception {
 		int evento = inte.getIntExtra(EXTRA_EVENT, 0);
-		int modulo = inte.getIntExtra(EXTRA_MODULE, 0);
+		int idAction = inte.getIntExtra(EXTRA_ACTION, 0);
 		CloudIntent i;
-		if (evento == 0 && modulo == 0) {
+		if (evento == 0 && idAction == 0) {
 			i = null;
 
 		} else {
-			i = new CloudIntent(inte.getAction(), evento, modulo);
+			i = new CloudIntent(inte.getAction(), evento, idAction);
 			i.setStringParams(inte.getStringExtra(EXTRA_PARAMS));
 		}
 		return i;
 
 	}
 
-	public CloudIntent(String action, int idEvento, int idModulo) {
+	public CloudIntent(String action, int idEvento, int idAction) {
 		super(action);
-		this.setFlags(FLAG_INCLUDE_STOPPED_PACKAGES| Intent.FLAG_DEBUG_LOG_RESOLUTION | Intent.FLAG_ACTIVITY_NEW_TASK);
-//		this.setAction(action);
+		this.setFlags(FLAG_INCLUDE_STOPPED_PACKAGES | Intent.FLAG_DEBUG_LOG_RESOLUTION | Intent.FLAG_ACTIVITY_NEW_TASK);
 		this.putExtra(EXTRA_EVENT, idEvento);
-		this.putExtra(EXTRA_MODULE, idModulo);
-
+		this.putExtra(EXTRA_ACTION, idAction);
 
 	}
 
@@ -68,8 +66,8 @@ public class CloudIntent extends Intent {
 	/*
 	 * Return the origin module identifier, if there are any error return 0
 	 */
-	public int getIdModule() {
-		return this.getIntExtra(EXTRA_MODULE, 0);
+	public int getIdAction() {
+		return this.getIntExtra(EXTRA_ACTION, 0);
 
 	}
 
@@ -90,13 +88,12 @@ public class CloudIntent extends Intent {
 
 	private void setStringParams(String params) throws JSONException {
 
+		JSONObject str = new JSONObject(params);
 
-		JSONObject str= new JSONObject(params);
+		JSONArray root = str.getJSONObject("jsonfile").getJSONArray("params");
 
-		JSONArray root =str.getJSONObject("jsonfile").getJSONArray("params");
-
-		for(int i=0;i<root.length();i++){
-			JSONObject obj= root.getJSONObject(i);
+		for (int i = 0; i < root.length(); i++) {
+			JSONObject obj = root.getJSONObject(i);
 			this.setParams(obj.getString("id"), obj.getString("value"));
 
 		}
@@ -118,7 +115,6 @@ public class CloudIntent extends Intent {
 		jsonObjectParams.put("params", jsonArray);
 		json.put("jsonfile", jsonObjectParams);
 
-
 	}
 
 	private void writeNewJsonObject(JSONObject json, String id, String value)
@@ -135,8 +131,6 @@ public class CloudIntent extends Intent {
 
 	public String[] getArrayIds() throws JSONException {
 
-
-
 		JSONArray jsonArray = json.getJSONObject("jsonfile").getJSONArray(
 				"params");
 		String[] arrayIds = new String[jsonArray.length()];
@@ -147,7 +141,6 @@ public class CloudIntent extends Intent {
 			arrayIds[i] = result.getString("id");
 
 		}
-
 
 		return arrayIds;
 
@@ -172,9 +165,5 @@ public class CloudIntent extends Intent {
 		return null;
 
 	}
-
-
-
-
 
 }
