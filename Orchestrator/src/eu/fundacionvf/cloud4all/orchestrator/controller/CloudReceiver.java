@@ -15,7 +15,7 @@ Redistribution and use in source and binary forms, with or without modification,
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-*/
+ */
 package eu.fundacionvf.cloud4all.orchestrator.controller;
 
 import android.content.BroadcastReceiver;
@@ -24,21 +24,15 @@ import android.content.Intent;
 import android.util.Log;
 
 public class CloudReceiver extends BroadcastReceiver {
-	
-	public static final String CLOUD_RECEIVER_ACTION = "CloudOrchestrator";
-	public static final String TAG = "CLOUD4ALL";
-	
-	//private BroadcastReceiver cloudReceiver;
+
+	public static final String TAG = "CLOUD4ALL-Broadcast Receiver Orchestrator";
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub
-		Log.e("Test Broadcast","RECIBIDO!");
-
+		Log.i(TAG, "RECIBIDO!");
 		intent.setClass(context, EventsController.class);
 		context.startService(intent);
-
 	}
-
 
 }
