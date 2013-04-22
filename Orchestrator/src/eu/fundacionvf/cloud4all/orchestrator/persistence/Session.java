@@ -183,6 +183,7 @@ public class Session {
 				}
 				i++;
 			}
+			if(action){
 			if (processes[i - 1].getListActions()[j - 1].getResponse().getParams().length != listaIds.length) {
 				processes[i - 1].getListActions()[j - 1].getResponse().params = new Param[listaIds.length];
 			}
@@ -195,6 +196,7 @@ public class Session {
 			processes[i - 1].getListActions()[j - 1].getResponse().setIdEvent(cloudinfo.getIdEvent());
 			String strAction = processes[i - 1].getListActions()[j - 1].getRequest().getIdModule();
 			processes[i - 1].getListActions()[j - 1].getResponse().setIdModule(strAction);
+			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
