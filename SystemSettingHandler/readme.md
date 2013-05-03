@@ -60,12 +60,7 @@ Curently, SystemSettingParams can modify this params:
 - Volumes.
 
 (see the complete parameters-list on http://wiki.gpii.net/index.php/Android_SystemSetting_Handler )
-Some of these results are dynamic data. These dynamic values can be modified by the operating system, the user or the enviroment. The other results are static. They are about model of the device, Brand, screen size, etc.
-Here are the static results:
-- device identifier (Model, brand)
-- Operating system (Version, userID, SDK version)
-- Cameras (numbers, lent side, resolution)
-- JoyPad support
+
 
 ## History log
 - 0.1 - basic functionality on SystemSettingHandler
