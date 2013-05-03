@@ -55,13 +55,11 @@ This class provide the specifics codes for each event, modules.
 
 ## Elements in the results
 Curently, SystemSettingParams can modify this params:
-- Brightness
-- Time off screen.
-- Dim screen.
-- Default notification sound.
-- Default ringtone.
-- System Sounds.
+- system settings.
+- Default sounds.
+- Volumes.
 
+(see the complete parameters-list on http://wiki.gpii.net/index.php/Android_SystemSetting_Handler )
 Some of these results are dynamic data. These dynamic values can be modified by the operating system, the user or the enviroment. The other results are static. They are about model of the device, Brand, screen size, etc.
 Here are the static results:
 - device identifier (Model, brand)
@@ -72,9 +70,10 @@ Here are the static results:
 ## History log
 - 0.1 - basic functionality on SystemSettingHandler
 0.2 - Implements Cloud4All Communication
+0.3 -
 
 ## Bugs and decisions
-not found at the moment.
+- Bug in notification Sound and Rigntone, sometimes don't get insert to media ContentProvider database the new file.
 
 
 
