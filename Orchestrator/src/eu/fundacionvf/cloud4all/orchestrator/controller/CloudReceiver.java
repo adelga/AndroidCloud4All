@@ -23,10 +23,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+/**
+ *This class receives an Intent from modules	
+ *@author Vodafone Spain Foundation
+ *@version 1.0
+ */
 public class CloudReceiver extends BroadcastReceiver {
 
 	public static final String TAG = "CLOUD4ALL-Broadcast Receiver Orchestrator";
 
+	/**
+	 *Default method for Broadcast Receiver	
+	 *@param context Context of the application
+	 *@param intent Intent received from the module
+	 */
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub

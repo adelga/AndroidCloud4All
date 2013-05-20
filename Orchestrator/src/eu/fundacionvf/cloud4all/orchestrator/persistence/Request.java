@@ -21,6 +21,11 @@ package eu.fundacionvf.cloud4all.orchestrator.persistence;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 
+/**
+ *This class is part of the Persistence Object	
+ *@author Vodafone Spain Foundation
+ *@version 1.0
+ */
 public class Request {
 
 	@Element

@@ -21,9 +21,14 @@ package eu.fundacionvf.cloud4all.orchestrator.util;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.content.Intent;
+import android.os.Build;
 
+/**
+ *This class is part of the Persistence Object	
+ *@author Vodafone Spain Foundation
+ *@version 1.0
+ */
 public class CloudIntent extends Intent {
 	private static final String EXTRA_PARAMS = "params";
 	private static final String EXTRA_EVENT = "idEvent";
@@ -47,9 +52,22 @@ public class CloudIntent extends Intent {
 
 	}
 
+	/*
+	 * public CloudIntent(String action, int idEvento, int idAction) {
+	 * super(action); this.setFlags(FLAG_INCLUDE_STOPPED_PACKAGES |
+	 * Intent.FLAG_DEBUG_LOG_RESOLUTION | Intent.FLAG_ACTIVITY_NEW_TASK);
+	 * this.putExtra(EXTRA_EVENT, idEvento); this.putExtra(EXTRA_ACTION,
+	 * idAction);
+	 * 
+	 * }
+	 */
 	public CloudIntent(String action, int idEvento, int idAction) {
 		super(action);
-		this.setFlags(FLAG_INCLUDE_STOPPED_PACKAGES | Intent.FLAG_DEBUG_LOG_RESOLUTION | Intent.FLAG_ACTIVITY_NEW_TASK);
+		if (Build.VERSION.SDK_INT < 12) {
+			this.setFlags(Intent.FLAG_DEBUG_LOG_RESOLUTION | Intent.FLAG_ACTIVITY_NEW_TASK);
+		} else {
+			this.setFlags(FLAG_INCLUDE_STOPPED_PACKAGES | Intent.FLAG_DEBUG_LOG_RESOLUTION | Intent.FLAG_ACTIVITY_NEW_TASK);
+		}
 		this.putExtra(EXTRA_EVENT, idEvento);
 		this.putExtra(EXTRA_ACTION, idAction);
 
@@ -146,6 +164,11 @@ public class CloudIntent extends Intent {
 
 	}
 
+	/**
+	 Get the value of object
+	 @param id id of the object
+	 @throws JSONException Exception in JSON
+	 */
 	public String getValue(String id) throws JSONException {
 
 		String value;

@@ -20,6 +20,11 @@ package eu.fundacionvf.cloud4all.orchestrator.persistence;
 
 import org.simpleframework.xml.Element;
 
+/**
+ *This class is part of the Persistence Object	
+ *@author Vodafone Spain Foundation
+ *@version 1.0
+ */
 public class Trigger {
 	@Element
 	private int idtrigger;

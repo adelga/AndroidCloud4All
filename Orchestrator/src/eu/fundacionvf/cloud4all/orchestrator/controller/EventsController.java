@@ -35,6 +35,10 @@ import eu.fundacionvf.cloud4all.orchestrator.persistence.Response;
 import eu.fundacionvf.cloud4all.orchestrator.persistence.Session;
 import eu.fundacionvf.cloud4all.orchestrator.util.CloudIntent;
 
+/**
+ *This class have the functionality for orchestrate the requests.	
+ *@author Vodafone Spain Foundation
+ *@version 1.0 */
 public class EventsController extends Service {
 	
 	private static final String TAG = "CLOUD4ALL";
@@ -64,7 +68,9 @@ public class EventsController extends Service {
 
 		}
 
-		//Method to manage the intents
+		/**Method to manage and orchestratre the intents
+		 * @param intent intent received from the BroadcastReceiver
+		 */
 		protected void onHandleIntent(Intent intent) {
 			// TODO Auto-generated method stub
 			try {
@@ -73,6 +79,7 @@ public class EventsController extends Service {
 				session = pXML.getSession();
 				CloudIntent cloudinfo = CloudIntent.intentToCloudIntent(intent);
 				int idEvent = cloudinfo.getIdEvent();
+				Log.i(TAG, "Trigger id:"+idEvent);
 				int idProcess = persistence.findIdProccessByIdTrigger(idEvent);
 		
 				// CASE REQUEST
@@ -89,13 +96,19 @@ public class EventsController extends Service {
 
 						pXML.writeXML(session);
 						// En este caso deberia ejecutar el paso de variables
+						Log.i(TAG, "getActions idevent:"+persistence.getActionsByIdTrigger(idEvent));
+						Log.i(TAG, "idProcess:"+idProcess);
 						startFirstAction(persistence.getActionsByIdTrigger(idEvent),idProcess);
 					} else {
 						if (session.processExist(idProcess)) {
+							Log.i(TAG, "getActions idevent:"+persistence.getActionsByIdTrigger(idEvent));
+							Log.i(TAG, "idProcess:"+idProcess);
 							startFirstAction(persistence.getActionsByIdTrigger(idEvent),idProcess);
 						} else {
 							session.addProcess(persistence.getProcessByIdProcess(idProcess));
 							pXML.writeXML(session);
+							Log.i(TAG, "getActions idevent:"+persistence.getActionsByIdTrigger(idEvent));
+							Log.i(TAG, "idProcess:"+idProcess);
 							startFirstAction(persistence.getActionsByIdTrigger(idEvent),idProcess);
 						}
 					}
@@ -114,7 +127,7 @@ public class EventsController extends Service {
 
 		}
 	}
-
+    
 	@Override
 	public void onCreate() {
 		// TODO Auto-generated method stub
@@ -172,6 +185,10 @@ public class EventsController extends Service {
 		Log.i(TAG, "Se realiza un onDestroy");
 	}
 
+	/**Method to do the first action of one process
+	 * @param actions List of actions
+	 * @param idProcess id of the process
+	 */
 	private void startFirstAction(Action[] actions, int idProcess) {
 		// TODO Auto-generated method stub
 		int indexProcess = session.indexOfProcess(idProcess);
@@ -191,7 +208,9 @@ public class EventsController extends Service {
 			e.printStackTrace();
 		}
 	}
-
+    /**Method to do the next action after the previous action is finished
+     * @param actionRec idAction received from the module
+     */
 	private void startNextAction(int actionRec) {
 		// TODO Auto-generated method stub
 		Log.i(TAG, "idaction to send:" + actionRec);

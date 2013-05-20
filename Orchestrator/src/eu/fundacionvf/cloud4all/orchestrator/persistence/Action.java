@@ -20,7 +20,11 @@ package eu.fundacionvf.cloud4all.orchestrator.persistence;
 
 import org.simpleframework.xml.Element;
 
-
+/**
+ *This class is part of the Persistence Object	
+ *@author Vodafone Spain Foundation
+ *@version 1.0
+ */
 public class Action {
 	@Element(required = false)
 	private int idaction;
@@ -33,26 +37,42 @@ public class Action {
     
 	public Action(){}
 	
+	/**
+	 * getIdAction method
+	 * @return Return idaction from Action object
+	 */
 	public int getIdAction(){
 		return idaction;
 	}
-	
+	/**setIdAction method
+	 * @param idaction set idaction in Action object
+	 */
 	public void setIdAction(int idaction){
 		this.idaction = idaction;
 	}
 	
+	/**getOrderNumber method
+	 * @return Return ordernum from Action object
+	 */
 	public int getOrderNumber() {
 		return ordernum;
 	}
-
+    /**setOrderNumber method
+     * @param ordernum set ordernum in Action object
+     */
 	public void setOrderNumber(int ordernum) {
 		this.ordernum = ordernum;
 	}
-
+    /**
+     * getRequest method
+     * @return Return request from Action object
+     */
 	public Request getRequest(){
 		return request;
 	}
-	
+	/**getResponse method
+	 * @return Return response from Action object
+	 */
 	public Response getResponse(){
 		return response;
 	}

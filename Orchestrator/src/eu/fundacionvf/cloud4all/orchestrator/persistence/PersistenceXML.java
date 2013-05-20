@@ -24,6 +24,11 @@ import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 import android.os.Environment;
 
+/**
+ *This class manage the read and write of persistence and session file	
+ *@author Vodafone Spain Foundation
+ *@version 1.0
+ */
 public class PersistenceXML extends Persistence {
 	private final static String FILENAME = Environment.getExternalStorageDirectory().getPath()+ "/download/Persistence.xml";
 	private final static String FILENAME_SESSION = Environment.getExternalStorageDirectory().getPath() + "/download/Session.xml";
@@ -75,6 +80,9 @@ public class PersistenceXML extends Persistence {
 		return s;
 	}
 
+	/*Method to write the Session object in the Session File
+	 * @param s Session object to serialize
+	 * */
 	public void writeXML(Session s) {
 		File result = new File(FILENAME_SESSION);
 		try {

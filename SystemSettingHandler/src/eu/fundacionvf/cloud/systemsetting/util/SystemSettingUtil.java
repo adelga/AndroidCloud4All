@@ -83,7 +83,7 @@ public class SystemSettingUtil {
 				dummy.setClass(cntx, DummyActivity.class);
 				dummy.putExtra("brightness", level); // For the instant change
 														// it's necessary an
-														// Activity,
+				dummy.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);										// Activity,
 				cntx.startActivity(dummy);
 
 			}

@@ -21,6 +21,11 @@ package eu.fundacionvf.cloud4all.orchestrator.persistence;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.Root;
 
+/**
+ *This class is part of the Persistence Object	
+ *@author Vodafone Spain Foundation
+ *@version 1.0
+ */
 @Root
 public class Persistence {
 	@ElementArray
@@ -35,6 +40,9 @@ public class Persistence {
 		return triggers;
 	}
 
+	/**Get Array of processes 
+	 * @return return Array of processes
+	 */
 	public Process[] getProcesses() {
 		return processes;
 	}

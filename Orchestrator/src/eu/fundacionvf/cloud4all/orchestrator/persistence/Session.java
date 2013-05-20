@@ -26,6 +26,11 @@ import android.util.Log;
 
 import eu.fundacionvf.cloud4all.orchestrator.util.CloudIntent;
 
+/**
+ *This class is part of the Persistence Object	
+ *@author Vodafone Spain Foundation
+ *@version 1.0
+ */
 @Root
 public class Session {
 	@ElementArray
@@ -33,20 +38,34 @@ public class Session {
 
 	public Session() {
 	}
-
+    /**
+     * Create new Session
+     */
 	public void newSession() {
 		processes = new Process[1];
 	}
 
+	/**
+	 * getProcesses method
+	 * @return Return array of processes
+	 */
 	public Process[] getProcesses() {
 		return processes;
 	}
-
+    /**setProcess method
+     * @param process Set this process in the array
+     * @param index Index of the process Array
+     */
 	public void setProcess(Process process, int index) {
 		this.processes[index] = process; 
 	}
 
 	// UTIL METHODS
+	
+	/**Get the process by idProcess
+	 * @param idProcess id of Process 
+	 * @return return Process
+	 */
 	public Process getProcessByIdProcess(int idProcess) {
 		int i = 0;
 		Process process = null;

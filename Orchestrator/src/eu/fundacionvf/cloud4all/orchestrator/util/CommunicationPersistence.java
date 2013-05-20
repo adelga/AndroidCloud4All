@@ -18,6 +18,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 package eu.fundacionvf.cloud4all.orchestrator.util;
 
+/**
+ *This class represents the rule condition for communication persistence params
+ *@author Vodafone Spain Foundation
+ *@version 1.0
+ */
 public class CommunicationPersistence {
 	
 	//ACTION Strings

@@ -40,7 +40,7 @@ import eu.fundacionvf.cloud.systemsetting.util.SystemSoundsUtil;
 public class SettingHandlerService extends Service {
 
 	
-	
+	private int idAction;
 	private String MESSAGE_OK = "OK";
 	private static final String TAG = "CLOUD4ALL";
 
@@ -76,6 +76,8 @@ public class SettingHandlerService extends Service {
 			Log.e("Receiver", "startComand");
 			CloudIntent cloudinfo = CloudIntent.intentToCloudIntent(intent);
 			int event = cloudinfo.getIdEvent();
+			idAction = cloudinfo.getIdAction();
+			Log.e(TAG, "ACTION ID :   "  +idAction);
 			//Switch to launch different process by Event Identifier
 			switch (event) {
 			case CommunicationPersistence.EVENT_CONFIGURE_SYSTEM_SETTINGS:
@@ -118,7 +120,7 @@ public class SettingHandlerService extends Service {
 			CloudIntent intent = new CloudIntent(
 					CommunicationPersistence.ACTION_ORCHESTRATOR,
 					CommunicationPersistence.EVENT_CONFIGURE_SYSTEM_SETTINGS_RESPONSE,
-					CommunicationPersistence.MODULE_SYSTEM_SETTING_HANDLER);
+					idAction);
 
 			intent.setParams("message", msg);
 			sendBroadcast(intent);
