@@ -231,6 +231,10 @@ public class Session {
 			if(action){
 			if (processes[i - 1].getListActions()[j - 1].getResponse().getParams().length != listaIds.length) {
 				processes[i - 1].getListActions()[j - 1].getResponse().params = new Param[listaIds.length];
+				//Initialize params
+				for(int k=0;k<listaIds.length;k++){
+					processes[i - 1].getListActions()[j - 1].getResponse().params[k] = new Param("undefined", "undefined");
+				}
 			}
 			// Fill the params received
 			for (int k = 0; k < processes[i - 1].getListActions()[j - 1].getResponse().getParams().length; k++) {
