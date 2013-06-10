@@ -147,7 +147,7 @@ public class SettingHandlerService extends Service {
 			SystemSettingUtil system = new SystemSettingUtil(this);
 
 			String brillo = cloudinfo.getValue("brightness");
-			String brilloModo = cloudinfo.getValue("brightnessMode");
+			String brilloModo = cloudinfo.getValue("brightness_mode");
 			if (brillo != null && brilloModo != null) {
 				system.changeBrightness(Integer.parseInt(brilloModo),
 						Integer.parseInt(brillo));

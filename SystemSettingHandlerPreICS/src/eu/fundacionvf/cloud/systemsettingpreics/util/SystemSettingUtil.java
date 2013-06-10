@@ -30,7 +30,11 @@ import android.provider.Settings.SettingNotFoundException;
 import android.sax.StartElementListener;
 import android.util.Log;
 import android.view.WindowManager;
-
+/**
+ * This class contains utility methods.
+ *
+ * @author adelga38@corp.vodafone.es (Alberto Delgado García)
+ */
 public class SystemSettingUtil {
 
 	private final static String preferences = "SystemSettingsPreferences";

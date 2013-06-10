@@ -17,7 +17,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
  */
 
-package eu.fundacionvf.cloud.systemsettingpreicsroot.util;
+package eu.fundacionvf.cloud.systemsettingroot.util;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -64,6 +64,7 @@ public class SystemSoundsUtil {
 	private static final String LOW_BATTERY_SOUND_COPY = "/system/media/audio/ui/LowBattery_org.ogg";
 	private static final String EFFECT_TICK_SOUND_COPY = "/system/media/audio/ui/Effect_Tick_org.ogg";
 
+
 	// private static final String UNO_250 = "Tono1-250.ogg";
 	// private static final String DOS_250 = "Tono2-250.ogg";
 	// private static final String TRES_250 = "Tono3-250.ogg";
@@ -91,16 +92,16 @@ public class SystemSoundsUtil {
 	 * 
 	 */
 	public String changeLockSound(String asset) {
-//		try {
-//
-//			String[] hin1 = { "su", "-c",
-//					"cp " + LOCK_SOUND + " " + LOCK_SOUND_COPY };
-//
-//			Runtime.getRuntime().exec(hin1).waitFor();
-//
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		try {
+
+			String[] hin1 = { "su", "-c",
+					"cp " + LOCK_SOUND + " " + LOCK_SOUND_COPY };
+
+			Runtime.getRuntime().exec(hin1).waitFor();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		try {
 			AssetManager assetManager = cntx.getAssets();
 			String[] files = null;

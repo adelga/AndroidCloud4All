@@ -1,6 +1,6 @@
 /*
-SystemFontUtil
-his class implements the functionality to modify the font scale in Android 2.x devices.
+SettingHandlerReceiver class
+This class extends from BroadCastReceiver, it's listening broadcast Intends with the special action for SettingHandlerRoot.	
 
 Copyright (c) 2013, Vodafone Spain Foundation
 All rights reserved.
@@ -15,48 +15,29 @@ Redistribution and use in source and binary forms, with or without modification,
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
- */
+*/
 
-package eu.fundacionvf.cloud.systemsettingpreics.util;
+package eu.fundacionvf.cloud.systemsettingroot;
 
+import java.io.File;
+
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Environment;
+import android.sax.StartElementListener;
 import android.util.Log;
-/**
- * This class contains utility methods.
- *
- * @author adelga38@corp.vodafone.es (Alberto Delgado García)
- */
-public class SystemFontUtil {
 
-	Context cntx;
-	
-	
-	public SystemFontUtil(Context cntx) {
-		
-		this.cntx = cntx;
+public class SettingHandlerReceiver extends BroadcastReceiver {
+
+	@Override
+	public void onReceive(Context context, Intent intent) {
+		Log.e("SettingHandlerRoot", "RECIBIDO!");
+
+
+		intent.setClass(context, SettingHandlerService.class);
+		context.startService(intent);//Launch the main Handler Service
+
 	}
 
-	/**
-	 * Configure the scale font This method needs a instance of SystemFontUtil
-	 * because the context is necessary
-	 * 
-	 * @param scale
-	 *            , font size (1.0 it's normal, shouldn't more than 2.0)
-	 * @return String, "OK" if all run properly, "ERROR": in other case
-	 */
-	public String changeFontScale(String scale){
-		try{
-			Log.d("SCALEE", "scale: " + scale);
-			Intent i = new Intent("eu.fundacionvf.ActionStartService");
-			float esc=Float.parseFloat(scale);
-			i.putExtra("scale",esc);	
-			cntx.sendBroadcast(i);
-			return "OK";
-		}catch(Exception e){
-			e.printStackTrace();
-			return "ERROR";
-		}
-		
-	}
 }

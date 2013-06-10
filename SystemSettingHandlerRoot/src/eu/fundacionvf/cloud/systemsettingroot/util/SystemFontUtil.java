@@ -17,7 +17,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
  */
 
-package eu.fundacionvf.cloud.systemsettingpreicsroot.util;
+package eu.fundacionvf.cloud.systemsettingroot.util;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -28,8 +28,11 @@ import java.net.URLConnection;
 
 import org.apache.http.util.ByteArrayBuffer;
 
+import android.app.*;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Environment;
+import android.os.RemoteException;
 import android.provider.Settings;
 import android.util.Log;
 /**
@@ -44,6 +47,7 @@ public class SystemFontUtil {
 	private static final String TAG = "SystemFontUtil";
 	private static final String MESSAGE_ERROR = "ERROR_FONT";
 	private static final String MESSAGE_OK = "OK";
+private Configuration mCurConfig;
 
 	private Context cntx;
 
@@ -51,6 +55,40 @@ public class SystemFontUtil {
 		super();
 
 		this.cntx = cntx;
+		try {
+			mCurConfig = ActivityManagerNative.getDefault().getConfiguration();
+			Log.d(TAG, "Native configuration before sclae: " + mCurConfig.fontScale);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Configure the scale font This method needs a instance of SystemFontUtil
+	 * because the context is necessary
+	 * 
+	 * @param scale
+	 *            , font size (1.0 it's normal, shouldn't more than 2.0)
+	 * @return String, "OK" if all run properly, "ERROR": in other case
+	 */
+	public String changeFontScale(String scale) {
+		//Check the scale can cast to float
+		try {
+			float f = Float.parseFloat(scale);
+			Log.d(TAG, "float antes de String: " + mCurConfig.fontScale);
+
+			Settings.System.putString(cntx.getContentResolver(),
+					Settings.System.FONT_SCALE, scale);
+			mCurConfig.fontScale=f;
+			 ActivityManagerNative.getDefault().updatePersistentConfiguration(this.mCurConfig);
+			return "OK";
+		}catch(NumberFormatException ne){
+			Log.e(TAG, "Scale not have the properly format");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return MESSAGE_ERROR;
 	}
 
 	/**
@@ -68,22 +106,14 @@ public class SystemFontUtil {
 		if (local == LOCAL_URL) {
 			Log.d(TAG, "local URL");
 			try {
-				File fnt = new File("/system/fonts/DroidSams_org.ttf");
+				//Incluir espera
+				String[] hin1 = { "su", "-c",
+						"cp /system/fonts/Roboto-Regular.ttf /system/fonts/Roboto-Regular_org.ttf" };
 
-				if (!fnt.exists()) {
-					try {
-
-						String[] hin1 = { "su", "-c",
-								"cp /system/fonts/DroidSans.ttf /system/fonts/DroidSans_org.ttf" };
-
-						Runtime.getRuntime().exec(hin1).waitFor();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
+				Runtime.getRuntime().exec(hin1);
 
 				String[] hin2 = { "su", "-c",
-						"cp " + url + " /system/fonts/DroidSans.ttf" };
+						"cp " + url + " /system/fonts/Roboto-Regular.ttf" };
 
 				Runtime.getRuntime().exec(hin2);
 
@@ -100,22 +130,16 @@ public class SystemFontUtil {
 				if (downlName == null) {
 					return "ERROR";
 				}
-				File fnt = new File("/system/fonts/DroidSams_org.ttf");
 
-				if (!fnt.exists()) {
-					try {
+				String[] hin1 = { "su", "-c",
+						"cp /system/fonts/Roboto-Regular.ttf /system/fonts/Roboto-Regular_org.ttf" };
 
-						String[] hin1 = { "su", "-c",
-								"cp /system/fonts/DroidSans.ttf /system/fonts/DroidSans_org.ttf" };
+				Runtime.getRuntime().exec(hin1).waitFor();
 
-						Runtime.getRuntime().exec(hin1).waitFor();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-
+				downlName= "/mnt/sdcard/cloud4AllFont/newType.ttf";
+				
 				String[] hin2 = { "su", "-c",
-						"cp " + downlName + " /system/fonts/DroidSans.ttf" };
+						"cp " + downlName + " /system/fonts/Roboto-Regular.ttf" };
 
 				Runtime.getRuntime().exec(hin2);
 
@@ -132,7 +156,7 @@ public class SystemFontUtil {
 		try {
 
 			String[] hin1 = { "su", "-c",
-					"cp  /system/fonts/DroidSans_org.ttf /system/fonts/DroidSans.ttf" };
+					"cp  /system/fonts/Roboto-Regular_org.ttf /system/fonts/Roboto-Regular.ttf" };
 
 			Runtime.getRuntime().exec(hin1);
 
@@ -143,15 +167,14 @@ public class SystemFontUtil {
 		}
 
 	}
-
+	
+	
 	/**
 	 * Configure the bold font type. This method needs a instance of
 	 * SystemFontUtil because the context is necessary REBOOT it's necessary
 	 * 
-	 * @param local
-	 *            , if the font it's in local (0) or remote (1)
-	 * @param url
-	 *            , the address of new font type
+	 * @param local, if the font it's in local (0) or remote (1)
+	 * @param url, the address of new font type
 	 * @return String, "OK" if all run properly, "ERROR": in other case
 	 */
 	public String changeBoldFontType(int local, String url) {
@@ -159,19 +182,13 @@ public class SystemFontUtil {
 		if (local == LOCAL_URL) {
 			Log.d(TAG, "local URL");
 			try {
-				File fnt = new File("/system/fonts/DroidSams-Bold_org.ttf");
-				if (!fnt.exists()) {
-					try {
-						String[] hin1 = { "su", "-c",
-								"cp /system/fonts/DroidSans-Bold.ttf /system/fonts/DroidSans-Bold_org.ttf" };
+				String[] hin1 = { "su", "-c",
+						"cp /system/fonts/Roboto-Bold.ttf /system/fonts/Roboto-Bold_org.ttf" };
 
-						Runtime.getRuntime().exec(hin1).waitFor();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
+				Runtime.getRuntime().exec(hin1);
+
 				String[] hin2 = { "su", "-c",
-						"cp " + url + " /system/fonts/DroidSans-Bold.ttf" };
+						"cp " + url + " /system/fonts/Roboto-Bold.ttf" };
 
 				Runtime.getRuntime().exec(hin2);
 
@@ -188,20 +205,14 @@ public class SystemFontUtil {
 				if (downlName == null) {
 					return "ERROR";
 				}
-				// comprobar que no este la original
-				File fnt = new File("/system/fonts/DroidSams-Bold_org.ttf");
-				if (!fnt.exists()) {
-					try {
-						String[] hin1 = { "su", "-c",
-								"cp /system/fonts/DroidSans-Bold.ttf /system/fonts/DroidSans-Bold_org.ttf" };
 
-						Runtime.getRuntime().exec(hin1).waitFor();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
+				String[] hin1 = { "su", "-c",
+						"cp /system/fonts/Roboto-Bold.ttf /system/fonts/Roboto-Bold_org.ttf" };
+
+				Runtime.getRuntime().exec(hin1).waitFor();
+
 				String[] hin2 = { "su", "-c",
-						"cp " + downlName + " /system/fonts/DroidSans-Bold.ttf" };
+						"cp " + downlName + " /system/fonts/Roboto-Bold.ttf" };
 
 				Runtime.getRuntime().exec(hin2);
 
@@ -213,12 +224,86 @@ public class SystemFontUtil {
 			}
 		}
 	}
-
+	
+	
 	public void restoreFontBold() {
 		try {
 
 			String[] hin1 = { "su", "-c",
-					"cp  /system/fonts/DroidSans-Bold_org.ttf /system/fonts/DroidSans-Bold.ttf" };
+					"cp  /system/fonts/Roboto-Bold_org.ttf /system/fonts/Roboto-Bold.ttf" };
+
+			Runtime.getRuntime().exec(hin1);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+		}
+
+	}
+	
+	/**
+	 * Configure the Italic font type. This method needs a instance of
+	 * SystemFontUtil because the context is necessary REBOOT it's necessary
+	 * 
+	 * @param local, if the font it's in local (0) or remote (1)
+	 * @param url, the address of new font type
+	 * @return String, "OK" if all run properly, "ERROR": in other case
+	 */
+	public String changeItalicFontType(int local, String url) {
+
+		if (local == LOCAL_URL) {
+			Log.d(TAG, "local URL");
+			try {
+				String[] hin1 = { "su", "-c",
+						"cp /system/fonts/Roboto-Italic.ttf /system/fonts/Roboto-Italic_org.ttf" };
+
+				Runtime.getRuntime().exec(hin1);
+
+				String[] hin2 = { "su", "-c",
+						"cp " + url + " /system/fonts/Roboto-Italic.ttf" };
+
+				Runtime.getRuntime().exec(hin2);
+
+				return "OK";
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return "ERROR";
+			}
+		} else {
+			Log.d(TAG, "remote URL");
+			try {
+				String downlName = downloadFile(url);
+				if (downlName == null) {
+					return "ERROR";
+				}
+
+				String[] hin1 = { "su", "-c",
+						"cp /system/fonts/Roboto-Italic.ttf /system/fonts/Roboto-Italic_org.ttf" };
+
+				Runtime.getRuntime().exec(hin1).waitFor();
+
+				String[] hin2 = { "su", "-c",
+						"cp " + downlName + " /system/fonts/Roboto-Italic.ttf" };
+
+				Runtime.getRuntime().exec(hin2);
+
+				return "OK";
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return "ERROR";
+			}
+		}
+	}
+	
+	
+	public void restoreFontItalic() {
+		try {
+
+			String[] hin1 = { "su", "-c",
+					"cp  /system/fonts/Roboto-Italic_org.ttf /system/fonts/Roboto-Italic.ttf" };
 
 			Runtime.getRuntime().exec(hin1);
 
@@ -265,8 +350,9 @@ public class SystemFontUtil {
 			FileOutputStream fos = new FileOutputStream(file);
 			fos.write(baf.toByteArray());
 			fos.close();
-			String down = file.toURI().toString();
-			Log.d("PREFERENCES", "Descargado fichero en " + down.substring(5));
+			String down= file.toURI().toString();
+			Log.d("PREFERENCES", "Descargado fichero en "
+					+ down.substring(5));
 
 			return down.substring(5);
 

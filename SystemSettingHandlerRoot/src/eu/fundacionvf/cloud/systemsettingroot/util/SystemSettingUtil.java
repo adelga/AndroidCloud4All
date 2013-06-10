@@ -1,6 +1,6 @@
 /*
 SystemSettingHandler
-This class implements the funcionality to modify the system Settings as the screen brightness or time off screen.
+This class implements the functionality to modify the system Settings as the screen brightness or time off screen.
 
 Copyright (c) 2013, Vodafone Spain Foundation
 All rights reserved.
@@ -17,11 +17,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
  */
 
-package eu.fundacionvf.cloud.systemsettingpreicsroot.util;
+package eu.fundacionvf.cloud.systemsettingroot.util;
 
 import android.content.Context;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.accessibility.AccessibilityEvent;
 /**
  * This class contains utility methods.
  *
@@ -43,6 +44,14 @@ public class SystemSettingUtil {
 		this.cntx = cntx;
 	}
 
+	/**
+	 * Enable an accessibility Service  This method needs a
+	 * instance of SystemSettingUtil because the context is necessary.
+	 * 
+	 * @param accesibility, its the packageName and the cAccessibilityService class which we want enable
+	 * @return void
+	 * 
+	 */
 	public String enableAccessibility(String accesibility) {
 		try {
 			int e = Integer.parseInt(accesibility);
@@ -58,6 +67,14 @@ public class SystemSettingUtil {
 		}
 
 	}
+	/**
+	 * Enable an accessibility Service, the difference with {@link enableAccessibility} is that this method don't disable the others accessibility Service. This method needs a
+	 * instance of SystemSettingUtil because the context is necessary.
+	 * 
+	 * @param nameService, its the packageName and the cAccessibilityService class which we want enable
+	 * @return void
+	 * 
+	 */
 
 	public String addEnableAccessibilityService(String nameService) {
 		try {
@@ -94,6 +111,14 @@ public class SystemSettingUtil {
 
 	}
 
+	/**
+	 * Disable an accessibility Service. This method needs a
+	 * instance of SystemSettingUtil because the context is necessary.
+	 * 
+	 * @param nameService, its the packageName and the AccessibilityService class which we want enable
+	 * @return void
+	 * 
+	 */
 	public String removeEnableAccessibilityService(String nameService) {
 		try {
 			String enableSer = Settings.Secure.getString(
@@ -142,7 +167,14 @@ public class SystemSettingUtil {
 		}
 
 	}
-
+	/**
+	 * Change the default InputMethod. This method needs a
+	 * instance of SystemSettingUtil because the context is necessary.
+	 * 
+	 * @param nameIME, its the packageName and the InputMethodService class which we want enable
+	 * @return void
+	 * 
+	 */
 	public String changeInputMethod(String nameIME) {
 		try {
 			String defaultIn = Settings.Secure.getString(
@@ -186,6 +218,14 @@ public class SystemSettingUtil {
 		}
 	}
 
+	/**
+	 * Enable/Disable TouchMode. This method needs a
+	 * instance of SystemSettingUtil because the context is necessary.
+	 * 
+	 * @param enable, 0 disable 1 enable
+	 * @return String, if can`t enable/disable return ERROR, if not OK.
+	 * 
+	 */
 	public String enableTouchMode(String enable) {
 		try {
 
@@ -230,7 +270,14 @@ public class SystemSettingUtil {
 			return MESSAGE_ERROR;
 		}
 	}
-
+	/**
+	 * Modify the default TTS Synth. This method needs a
+	 * instance of SystemSettingUtil because the context is necessary.
+	 * 
+	 * @param tts, the TTSEngine package name.
+	 * @return String, if can`t enable/disable return ERROR, if not OK.
+	 * 
+	 */
 	public String defaultTTS(String tts) {
 		try {
 
@@ -242,7 +289,14 @@ public class SystemSettingUtil {
 			return MESSAGE_ERROR;
 		}
 	}
-
+	/**
+	 * Set the TTS Pitch. This method needs a
+	 * instance of SystemSettingUtil because the context is necessary.
+	 * 
+	 * @param pith, 0-500
+	 * @return String, if can`t configure return ERROR, if not OK.
+	 * 
+	 */
 	public String setPitchTTS(String pitch) {
 		try {
 			int p = Integer.parseInt(pitch);
@@ -266,6 +320,14 @@ public class SystemSettingUtil {
 		}
 	}
 
+	/**
+	 * Set the TTS Rate. This method needs a
+	 * instance of SystemSettingUtil because the context is necessary.
+	 * 
+	 * @param rate, 0-500
+	 * @return String, if can`t configure return ERROR, if not OK.
+	 * 
+	 */
 	public String setRateTTS(String rate) {
 		try {
 

@@ -1,6 +1,6 @@
 /*
-SystemFontUtil
-his class implements the functionality to modify the font scale in Android 2.x devices.
+FileUtil class
+This class implements the functionality to do file operations as copy an asset in the file system.
 
 Copyright (c) 2013, Vodafone Spain Foundation
 All rights reserved.
@@ -17,46 +17,54 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
  */
 
-package eu.fundacionvf.cloud.systemsettingpreics.util;
+package eu.fundacionvf.cloud.systemsettingroot.util;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import android.content.Context;
-import android.content.Intent;
+import android.content.res.AssetManager;
 import android.util.Log;
 /**
  * This class contains utility methods.
  *
  * @author adelga38@corp.vodafone.es (Alberto Delgado García)
  */
-public class SystemFontUtil {
+public class FileUtil {
 
-	Context cntx;
-	
-	
-	public SystemFontUtil(Context cntx) {
-		
-		this.cntx = cntx;
+	private Context cntx;
+
+	public FileUtil(Context c) {
+		this.cntx = c;
 	}
 
-	/**
-	 * Configure the scale font This method needs a instance of SystemFontUtil
-	 * because the context is necessary
-	 * 
-	 * @param scale
-	 *            , font size (1.0 it's normal, shouldn't more than 2.0)
-	 * @return String, "OK" if all run properly, "ERROR": in other case
-	 */
-	public String changeFontScale(String scale){
-		try{
-			Log.d("SCALEE", "scale: " + scale);
-			Intent i = new Intent("eu.fundacionvf.ActionStartService");
-			float esc=Float.parseFloat(scale);
-			i.putExtra("scale",esc);	
-			cntx.sendBroadcast(i);
-			return "OK";
-		}catch(Exception e){
-			e.printStackTrace();
-			return "ERROR";
+	public void copyAsset(String nameAsset, String dest) {
+		AssetManager assetManager = cntx.getAssets();
+		InputStream in = null;
+		OutputStream out = null;
+		try {
+			in = assetManager.open(nameAsset);
+			out = new FileOutputStream(dest);
+			copyFile(in, out);
+			in.close();
+			in = null;
+			out.flush();
+			out.close();
+			out = null;
+		} catch (IOException e) {
+			Log.e("tag", "Failed to copy asset file: " + nameAsset, e);
 		}
-		
+
 	}
+
+	private void copyFile(InputStream in, OutputStream out) throws IOException {
+		byte[] buffer = new byte[1024];
+		int read;
+		while ((read = in.read(buffer)) != -1) {
+			out.write(buffer, 0, read);
+		}
+	}
+
 }

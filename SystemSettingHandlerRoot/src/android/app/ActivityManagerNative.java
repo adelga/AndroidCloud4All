@@ -1,6 +1,7 @@
 /*
-SystemFontUtil
-his class implements the functionality to modify the font scale in Android 2.x devices.
+ActivityManagerNative
+This class have the same package and name than one from Android System, this is implemented to get the SDK can compile the calls to this Class. 
+It is used to configure the font scale and locale in real time.
 
 Copyright (c) 2013, Vodafone Spain Foundation
 All rights reserved.
@@ -17,46 +18,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
  */
 
-package eu.fundacionvf.cloud.systemsettingpreics.util;
+package android.app;
 
-import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
-/**
- * This class contains utility methods.
- *
- * @author adelga38@corp.vodafone.es (Alberto Delgado García)
- */
-public class SystemFontUtil {
+public abstract class ActivityManagerNative implements IActivityManager {
+   
+        public static IActivityManager getDefault(){
+                return null;
+        }   
 
-	Context cntx;
-	
-	
-	public SystemFontUtil(Context cntx) {
-		
-		this.cntx = cntx;
-	}
-
-	/**
-	 * Configure the scale font This method needs a instance of SystemFontUtil
-	 * because the context is necessary
-	 * 
-	 * @param scale
-	 *            , font size (1.0 it's normal, shouldn't more than 2.0)
-	 * @return String, "OK" if all run properly, "ERROR": in other case
-	 */
-	public String changeFontScale(String scale){
-		try{
-			Log.d("SCALEE", "scale: " + scale);
-			Intent i = new Intent("eu.fundacionvf.ActionStartService");
-			float esc=Float.parseFloat(scale);
-			i.putExtra("scale",esc);	
-			cntx.sendBroadcast(i);
-			return "OK";
-		}catch(Exception e){
-			e.printStackTrace();
-			return "ERROR";
-		}
-		
-	}
 }
