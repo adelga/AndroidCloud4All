@@ -1,5 +1,5 @@
 /*
-SettingHandlerReceiver class
+SettingHandlerService class
 This class extends from Service, manage all configuration changes.  It's for Android version since 4.0 (API 14, ICS). 
 It's necessary put the apk generate in /system/app to get access to all configuration files
 

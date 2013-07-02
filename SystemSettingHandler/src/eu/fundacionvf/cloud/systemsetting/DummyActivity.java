@@ -32,6 +32,7 @@ public class DummyActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		int brightness=this.getIntent().getExtras().getInt("brightness");
+		
 		Log.d("DUmmy Activity", "brillo: " + brightness);
 		WindowManager.LayoutParams lp = getWindow()
 				.getAttributes();
@@ -39,6 +40,7 @@ public class DummyActivity extends Activity {
 													// brightness is 255
 		getWindow().setAttributes(lp); // for the instant
 												// change
+		
 		
 		finish();
 	}

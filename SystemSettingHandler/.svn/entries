@@ -96,14 +96,14 @@ has-props
 
 AndroidManifest.xml
 file
-28
+30
 
 
 
-2013-03-15T14:03:57.561000Z
-20f465e0e5ab5d647afa9d716d80b207
-2013-03-21T10:21:56.703125Z
-28
+2013-04-03T10:38:28.847000Z
+a9b2f333a6917967a3db948cd7fd1d8d
+2013-04-03T10:34:42.968750Z
+30
 adelga38
 has-props
 
@@ -126,7 +126,7 @@ has-props
 
 
 
-496
+1609
 
 assets
 dir
@@ -173,6 +173,40 @@ has-props
 
 libs
 dir
+
+lint.xml
+file
+29
+
+
+
+2013-03-21T10:25:12.082000Z
+27e4e46dfcc0cc5d9693b7209435f0fc
+2013-04-03T08:14:22.265625Z
+29
+adelga38
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+97
 
 proguard-project.txt
 file

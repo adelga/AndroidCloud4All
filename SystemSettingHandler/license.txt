@@ -1,7 +1,6 @@
-	Device reporter for Android
-	Copyright (c) 2013, Technosite R&D
+	SystemSettingHandler for Android
+	Copyright (C) 2013, Vodafone Spain Foundation
 	All rights reserved.
-The research leading to these results has received funding from the European Union's Seventh Framework Programme (FP7/2007-2013) under grant agreement n° 289016
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -11,7 +10,7 @@ modification, are permitted provided that the following conditions are met:
  * Redistributions in binary form must reproduce the above copyright notice, 
    this list of conditions and the following disclaimer in the documentation 
    and/or other materials provided with the distribution. 
- * Neither the name of Technosite R&D nor the names of its contributors may 
+ * Neither the name of Fundosa Technosite nor the names of its contributors may 
    be used to endorse or promote products derived from this software without 
    specific prior written permission.
 
