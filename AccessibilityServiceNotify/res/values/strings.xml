@@ -1,0 +1,10 @@
+<resources>
+
+    <string name="app_name">AccessibilityServiceNotify</string>
+    <string name="notification">notification:</string>
+    <string name="cancel">Cancel</string>
+       <string name="see">See</string>
+           <string name="text">This project has been developed by Vodafone Spain Foundation, Innovation Unit. You can share and distribute this project and built software using New BSD license. Please, send any feedback to info@cloud4all.info</string>
+       
+
+</resources>
