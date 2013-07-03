@@ -22,7 +22,11 @@ package eu.fundacionvf.cloud.systemsettingpreics.util;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-
+/**
+ * This class contains utility methods.
+ *
+ * @author adelga38@corp.vodafone.es (Alberto Delgado García)
+ */
 public class SystemFontUtil {
 
 	Context cntx;
@@ -33,7 +37,14 @@ public class SystemFontUtil {
 		this.cntx = cntx;
 	}
 
-
+	/**
+	 * Configure the scale font This method needs a instance of SystemFontUtil
+	 * because the context is necessary
+	 * 
+	 * @param scale
+	 *            , font size (1.0 it's normal, shouldn't more than 2.0)
+	 * @return String, "OK" if all run properly, "ERROR": in other case
+	 */
 	public String changeFontScale(String scale){
 		try{
 			Log.d("SCALEE", "scale: " + scale);

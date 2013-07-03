@@ -112,15 +112,15 @@ public class FontService extends Service {
 			 localEditor.putLong("lsfsut", System.currentTimeMillis());
 			 localEditor.apply();
 
-			Log.d("Service LOg", "version api : " + VERSION.SDK_INT);
-			Class[] arrayOfClass1 = new Class[1];
-			arrayOfClass1[0] = Configuration.class;
-			try {
-				localMethod = localClass.getMethod(h, arrayOfClass1);
-			} catch (Exception e) {
-				Log.d("SERVICE LOG", h + "no se ha podido invocar");
-				e.printStackTrace();
-			}
+//			Log.d("Service LOg", "version api : " + VERSION.SDK_INT);
+//			Class[] arrayOfClass1 = new Class[1];
+//			arrayOfClass1[0] = Configuration.class;
+//			try {
+//				localMethod = localClass.getMethod(h, arrayOfClass1);
+//			} catch (Exception e) {
+//				Log.d("SERVICE LOG", h + "no se ha podido invocar");
+//				e.printStackTrace();
+//			}
 		} catch (Exception ee) {
 			ee.printStackTrace();
 		}

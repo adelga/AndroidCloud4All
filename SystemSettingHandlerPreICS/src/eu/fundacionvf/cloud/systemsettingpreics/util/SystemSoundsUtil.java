@@ -39,7 +39,11 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
-
+/**
+ * This class contains utility methods.
+ *
+ * @author adelga38@corp.vodafone.es (Alberto Delgado García)
+ */
 public class SystemSoundsUtil {
 	private final static String preferences = "SystemSoundsPreferences";
 
@@ -326,8 +330,8 @@ public class SystemSoundsUtil {
 			Uri defaulturi = RingtoneManager.getActualDefaultRingtoneUri(cntx,
 					RingtoneManager.TYPE_NOTIFICATION);
 			Log.d(tag, "default uri: " + defaulturi.toString());
-			Ringtone rign = RingtoneManager.getRingtone(cntx, defaulturi);
-			Log.d(tag, "ring: " + rign.toString() + "   " + rign.getTitle(cntx));
+//			Ringtone rign = RingtoneManager.getRingtone(cntx, defaulturi);
+//			Log.d(tag, "ring: " + rign.toString() );
 
 			// Storage in SharedPreferences
 			SharedPreferences.Editor editor = prefs.edit();

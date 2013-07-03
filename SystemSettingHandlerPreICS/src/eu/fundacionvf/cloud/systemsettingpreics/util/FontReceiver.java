@@ -30,7 +30,7 @@ import android.util.Log;
 
 public class FontReceiver extends BroadcastReceiver {
 	
-	private static final long REPEAT_TIME = 1000 * 30;
+	private static final long REPEAT_TIME = 1000 * 10;
 
 
 	@Override

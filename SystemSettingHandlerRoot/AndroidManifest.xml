@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="eu.fundacionvf.cloud.systemsetting"
+    package="eu.fundacionvf.cloud.systemsettingroot"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -26,6 +26,7 @@
     <uses-permission android:name="android.permission.INSTALL_PACKAGES"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION"/>
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -33,11 +34,11 @@
         android:theme="@style/AppTheme" >
 
 
-        <service android:name="eu.fundacionvf.cloud.systemsetting.SettingHandlerService" >
+        <service android:name="eu.fundacionvf.cloud.systemsettingroot.SettingHandlerService" >
         </service>
 
         <receiver
-            android:name="eu.fundacionvf.cloud.systemsetting.SettingHandlerReceiver"
+            android:name="eu.fundacionvf.cloud.systemsettingroot.SettingHandlerReceiver"
             android:enabled="true"
             android:exported="true" >
             <intent-filter>

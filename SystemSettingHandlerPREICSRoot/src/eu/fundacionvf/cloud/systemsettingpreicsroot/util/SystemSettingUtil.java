@@ -22,7 +22,11 @@ package eu.fundacionvf.cloud.systemsettingpreicsroot.util;
 import android.content.Context;
 import android.provider.Settings;
 import android.util.Log;
-
+/**
+ * This class contains utility methods.
+ *
+ * @author adelga38@corp.vodafone.es (Alberto Delgado García)
+ */
 public class SystemSettingUtil {
 
 	private final static String preferences = "SystemSettingsPreferences";
