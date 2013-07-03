@@ -82,6 +82,7 @@ public class EventsController extends Service {
 				persistence = pXML.getPersistence();
 				session = pXML.getSession();
 				CloudIntent cloudinfo = CloudIntent.intentToCloudIntent(intent);
+				Log.e(TAG, "Params:  "+ cloudinfo.params);
 				int idEvent = cloudinfo.getIdEvent();
 				int idProcess = persistence.findIdProccessByIdTrigger(idEvent);
 
@@ -247,6 +248,7 @@ public class EventsController extends Service {
 					value = matching.getValue(idTrigger_active,idAction_active, params[j].getValue(), session);
 					intent.setParams(params[j].getKey(), value);
 				}
+				Log.i(TAG, "params a enviar: " + intent.params);
 				sendBroadcast(intent);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

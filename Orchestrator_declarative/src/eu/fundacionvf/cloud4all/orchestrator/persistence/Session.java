@@ -248,6 +248,7 @@ public class Session {
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
+			Log.e("Session", "error");
 			e.printStackTrace();
 		}
 	}
