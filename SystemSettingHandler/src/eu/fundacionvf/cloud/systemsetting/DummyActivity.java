@@ -33,7 +33,6 @@ public class DummyActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		int brightness=this.getIntent().getExtras().getInt("brightness");
 		
-		Log.d("DUmmy Activity", "brillo: " + brightness);
 		WindowManager.LayoutParams lp = getWindow()
 				.getAttributes();
 		lp.screenBrightness = brightness / 255.0f; // the most value of

@@ -21,17 +21,14 @@ package eu.fundacionvf.cloud.systemsettingpreics.util;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.util.Log;
 
 public class StartFontServiceReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Log.d("Service LOG", "Receiver:  he recivido algo....");
 		Intent service = new Intent(context, FontService.class);
  float scale = intent.getFloatExtra("scale", 1.0f);
- Log.d("StartFontServiceReceiver", "scale " + scale);
+
 		service.putExtra("scale", scale);
 		context.startService(service);
 	}

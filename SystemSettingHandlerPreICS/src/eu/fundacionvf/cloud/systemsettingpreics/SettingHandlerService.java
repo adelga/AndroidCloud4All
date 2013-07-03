@@ -19,11 +19,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 package eu.fundacionvf.cloud.systemsettingpreics;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
-import org.json.JSONException;
-
 import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
@@ -59,18 +54,14 @@ public class SettingHandlerService extends Service {
 		super.onCreate();
 	}
 
-
 	@Override
 	public void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		// TODO Auto-generated method stub
 		try {
-			Log.e("Receiver", "startComand");
 			CloudIntent cloudinfo = CloudIntent.intentToCloudIntent(intent);
 			if (cloudinfo != null) {
 				int event = cloudinfo.getIdEvent();
@@ -80,13 +71,13 @@ public class SettingHandlerService extends Service {
 				switch (event) {
 				case CommunicationPersistence.EVENT_CONFIGURE_SYSTEM_SETTINGS:
 					Log.i(TAG, "Configure sound...");
-					String msge=configure(cloudinfo);
-					response(msge,action);
+					String msge = configure(cloudinfo);
+					response(msge, action);
 					break;
 				case CommunicationPersistence.EVENT_RESTORE_SYSTEM_SETTINGS:
 					Log.i(TAG, "restore sound");
 					restore(cloudinfo);
-					response(MESSAGE_OK,action);
+					response(MESSAGE_OK, action);
 					break;
 
 				default:
@@ -108,7 +99,6 @@ public class SettingHandlerService extends Service {
 				sound.restoreNotificationSound();
 			}
 
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -119,7 +109,6 @@ public class SettingHandlerService extends Service {
 	public void onStart(Intent intent, int startId) {
 		// TODO Auto-generated method stub
 		super.onStart(intent, startId);
-		Log.d(TAG,"ON START");
 	}
 
 	private void response(String msg, int action) {
@@ -132,13 +121,12 @@ public class SettingHandlerService extends Service {
 			intent.setParams("message", msg);
 			sendBroadcast(intent);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 	}
 
 	private String configure(CloudIntent cloudinfo) {
-		// TODO Auto-generated method stub
 		String[] listaids;
 		try {
 			listaids = cloudinfo.getArrayIds();
@@ -149,7 +137,7 @@ public class SettingHandlerService extends Service {
 
 			}
 
-			//System
+			// System
 			SystemSettingUtil system = new SystemSettingUtil(this);
 
 			String brillo = cloudinfo.getValue("brightness");
@@ -160,123 +148,129 @@ public class SettingHandlerService extends Service {
 			}
 			String screen_time_off = cloudinfo.getValue("screen_time_off");
 
-			if(screen_time_off!=null){
+			if (screen_time_off != null) {
 				system.changeTimeScreenOff(screen_time_off);
 			}
-			String dim_screen= cloudinfo.getValue("dim_screen");
+			String dim_screen = cloudinfo.getValue("dim_screen");
 
-			if(dim_screen!=null){
-				if(dim_screen.contains("0"))
-				system.changeDimScreen(false);
+			if (dim_screen != null) {
+				if (dim_screen.contains("0"))
+					system.changeDimScreen(false);
 				else
 					system.changeDimScreen(true);
 
 			}
-			String haptic_feedback=  cloudinfo.getValue("haptic_feedback");
-			if(haptic_feedback!=null){
+			String haptic_feedback = cloudinfo.getValue("haptic_feedback");
+			if (haptic_feedback != null) {
 				system.enableHapticFeedBack(haptic_feedback);
 			}
-			
-			String auto_rotation=  cloudinfo.getValue("auto_rotation");
-			if(auto_rotation!=null){
+
+			String auto_rotation = cloudinfo.getValue("auto_rotation");
+			if (auto_rotation != null) {
 				system.setAutoOrientationEnabled(auto_rotation);
 			}
-			
-			String msgSound=" ";
-			
-			
-			//sound
+
+			String msgSound = " ";
+
+			// sound
 			SystemSoundsUtil sound = new SystemSoundsUtil(this);
 
 			String notificationsound = cloudinfo.getValue("notification_sound");
 			if (notificationsound != null) {
 				sound.changeNotificationSound(notificationsound);
-			}else{
-				Log.e(TAG,"notification_sound null");
+			} else {
+				Log.e(TAG, "notification_sound null");
 			}
-			
+
 			String ringtone = cloudinfo.getValue("ringtone_sound");
 			if (ringtone != null) {
 				sound.changeRingtoneSound(ringtone);
-			}else{
-				Log.e(TAG,"rigntone_sound null");
+			} else {
+				Log.e(TAG, "rigntone_sound null");
 			}
 			String sound_effects = cloudinfo.getValue("sound_effects");
-			if(sound_effects!=null){
+			if (sound_effects != null) {
 				sound.enableSoundEffects(sound_effects);
 			}
 			String music_volume = cloudinfo.getValue("music_volume");
-			if(music_volume!=null){
-				if(!sound.changeMusicVolume(music_volume).equalsIgnoreCase(MESSAGE_OK)){
-					msgSound=msgSound + " / changeMusic /";
+			if (music_volume != null) {
+				if (!sound.changeMusicVolume(music_volume).equalsIgnoreCase(
+						MESSAGE_OK)) {
+					msgSound = msgSound + " / changeMusic /";
 				}
 			}
 			String alarm_volume = cloudinfo.getValue("alarm_volume");
-			if(alarm_volume!=null){
-				if(!sound.changeAlarmVolume(alarm_volume).equalsIgnoreCase(MESSAGE_OK)){
-					msgSound=msgSound + " / changeAlarm /";
+			if (alarm_volume != null) {
+				if (!sound.changeAlarmVolume(alarm_volume).equalsIgnoreCase(
+						MESSAGE_OK)) {
+					msgSound = msgSound + " / changeAlarm /";
 				}
 			}
 			String dtmf_volume = cloudinfo.getValue("dtmf_volume");
-			if(dtmf_volume!=null){
-				if(!sound.changeDTMFVolume(dtmf_volume).equalsIgnoreCase(MESSAGE_OK)){
-					msgSound=msgSound + " / changeDTMF /";
+			if (dtmf_volume != null) {
+				if (!sound.changeDTMFVolume(dtmf_volume).equalsIgnoreCase(
+						MESSAGE_OK)) {
+					msgSound = msgSound + " / changeDTMF /";
 				}
 			}
-			String notification_volume = cloudinfo.getValue("notification_volume");
-			if(notification_volume!=null){
-				if(!sound.changeNotificationVolume(notification_volume).equalsIgnoreCase(MESSAGE_OK)){
-					msgSound=msgSound + " / changeNotification /";
+			String notification_volume = cloudinfo
+					.getValue("notification_volume");
+			if (notification_volume != null) {
+				if (!sound.changeNotificationVolume(notification_volume)
+						.equalsIgnoreCase(MESSAGE_OK)) {
+					msgSound = msgSound + " / changeNotification /";
 				}
 			}
 			String ring_volume = cloudinfo.getValue("ring_volume");
-			if(ring_volume!=null){
-				if(!sound.changeRingVolume(ring_volume).equalsIgnoreCase(MESSAGE_OK)){
-					msgSound=msgSound + " / changeRING /";
+			if (ring_volume != null) {
+				if (!sound.changeRingVolume(ring_volume).equalsIgnoreCase(
+						MESSAGE_OK)) {
+					msgSound = msgSound + " / changeRING /";
 				}
 			}
 			String system_volume = cloudinfo.getValue("system_volume");
-			if(system_volume!=null){
-				if(!sound.changeSystemVolume(system_volume).equalsIgnoreCase(MESSAGE_OK)){
-					msgSound=msgSound + " / changeSystem /";
+			if (system_volume != null) {
+				if (!sound.changeSystemVolume(system_volume).equalsIgnoreCase(
+						MESSAGE_OK)) {
+					msgSound = msgSound + " / changeSystem /";
 				}
 			}
 			String voice_call_volume = cloudinfo.getValue("voice_call_volume");
-			if(voice_call_volume!=null){
-				if(!sound.changeVoiceCallVolume(voice_call_volume).equalsIgnoreCase(MESSAGE_OK)){
-					msgSound=msgSound + " / changeVOICE /";
+			if (voice_call_volume != null) {
+				if (!sound.changeVoiceCallVolume(voice_call_volume)
+						.equalsIgnoreCase(MESSAGE_OK)) {
+					msgSound = msgSound + " / changeVOICE /";
 				}
 			}
-			String vibrate_notification = cloudinfo.getValue("vibrate_notification");
-			if(vibrate_notification!=null){
-				if(!sound.changeVibrateNotification(vibrate_notification).equalsIgnoreCase(MESSAGE_OK)){
-					msgSound=msgSound + " / vibrateNotification /";
+			String vibrate_notification = cloudinfo
+					.getValue("vibrate_notification");
+			if (vibrate_notification != null) {
+				if (!sound.changeVibrateNotification(vibrate_notification)
+						.equalsIgnoreCase(MESSAGE_OK)) {
+					msgSound = msgSound + " / vibrateNotification /";
 				}
 			}
 			String vibrate_rigntone = cloudinfo.getValue("vibrate_ringtone");
-			if(vibrate_rigntone!=null){
-				if(!sound.changeVibrateRigntone(vibrate_rigntone).equalsIgnoreCase(MESSAGE_OK)){
-					msgSound=msgSound + " / vibrateRigntone /";
+			if (vibrate_rigntone != null) {
+				if (!sound.changeVibrateRigntone(vibrate_rigntone)
+						.equalsIgnoreCase(MESSAGE_OK)) {
+					msgSound = msgSound + " / vibrateRigntone /";
 				}
 			}
 
-			//font
+			// font
 			SystemFontUtil font = new SystemFontUtil(this);
 			String font_scale = cloudinfo.getValue("font_scale");
-if(font_scale!=null){
-			font.changeFontScale(font_scale);
-}
-			
-			if(msgSound.equalsIgnoreCase("")){
+			if (font_scale != null) {
+				font.changeFontScale(font_scale);
+			}
+
+			if (msgSound.equalsIgnoreCase("")) {
 				return MESSAGE_OK;
-			}else{
+			} else {
 				return "ERROR: " + msgSound;
 			}
 
-
-			//font
-			
-			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -286,7 +280,7 @@ if(font_scale!=null){
 
 	@Override
 	public boolean onUnbind(Intent intent) {
-		// TODO Auto-generated method stub
+	
 		return super.onUnbind(intent);
 	}
 

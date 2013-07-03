@@ -71,7 +71,6 @@ public class SettingHandlerService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		// TODO Auto-generated method stub
 		try {
-			Log.e("Receiver", "startComand");
 			CloudIntent cloudinfo = CloudIntent.intentToCloudIntent(intent);
 			if (cloudinfo != null) {
 				int event = cloudinfo.getIdEvent();

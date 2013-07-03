@@ -35,9 +35,7 @@ public class FontReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Log.d("MYRECEIVER", "on receive " +  intent.getAction());
 		float scale= intent.getExtras().getFloat("scale");
-		Log.d("MYRECEIVER", "on receive " +  scale);
 		AlarmManager service = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 		Intent i = new Intent(context, StartFontServiceReceiver.class);
 		i.putExtra("scale", scale);

@@ -28,8 +28,6 @@ public class SettingHandlerReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Log.e("SettingHandlerPREICS", "RECIBIDO!");
-
 		intent.setClass(context, SettingHandlerService.class);
 		context.startService(intent);// Launch the main Handler Service
 

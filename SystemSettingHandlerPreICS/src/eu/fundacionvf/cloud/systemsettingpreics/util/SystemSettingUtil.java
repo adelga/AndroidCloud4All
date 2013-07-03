@@ -19,17 +19,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 package eu.fundacionvf.cloud.systemsettingpreics.util;
 
-import eu.fundacionvf.cloud.systemsettingpreics.DummyActivity;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.provider.Settings;
-import android.provider.Settings.SettingNotFoundException;
-import android.sax.StartElementListener;
 import android.util.Log;
-import android.view.WindowManager;
+import eu.fundacionvf.cloud.systemsettingpreics.DummyActivity;
 /**
  * This class contains utility methods.
  *
@@ -68,18 +64,11 @@ public class SystemSettingUtil {
 	public void enableHapticFeedBack(String enable) {
 		try {
 
-			Log.d(tag,
-					"HapticFeedback effects: "
-							+ Settings.System.getInt(cntx.getContentResolver(),
-									Settings.System.HAPTIC_FEEDBACK_ENABLED));
 			Log.i(tag,
 					"HapticFeedback effects: "
 							+ Settings.System.getInt(cntx.getContentResolver(),
 									Settings.System.HAPTIC_FEEDBACK_ENABLED));
-			Log.e(tag,
-					"HapticFeedback effects: "
-							+ Settings.System.getInt(cntx.getContentResolver(),
-									Settings.System.HAPTIC_FEEDBACK_ENABLED));
+
 			int efect = Integer.parseInt(enable);
 			if (efect == 0 || efect == 1) {
 				Settings.System.putInt(cntx.getContentResolver(),
@@ -140,7 +129,6 @@ public class SystemSettingUtil {
 
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

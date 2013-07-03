@@ -32,7 +32,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
-import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Environment;
@@ -267,8 +266,7 @@ public class SystemSoundsUtil {
 
 			File file = new File(path, fileName);
 
-			Log.d("PREFERENCES", "Run hilo");
-			Log.i("PREFERENCES", "filename:" + fileName);
+
 
 			/* Open a connection to that URL. */
 			URLConnection ucon = url.openConnection();
@@ -293,7 +291,7 @@ public class SystemSoundsUtil {
 			FileOutputStream fos = new FileOutputStream(file);
 			fos.write(baf.toByteArray());
 			fos.close();
-			Log.d("PREFERENCES", "Descargado fichero");
+
 
 		} catch (Exception e) {
 
@@ -325,18 +323,13 @@ public class SystemSoundsUtil {
 			String olduri = Settings.System.getString(
 					this.cntx.getContentResolver(),
 					Settings.System.NOTIFICATION_SOUND);
-			Log.d(tag, "old uri: " + olduri.toString());
+
 
 			Uri defaulturi = RingtoneManager.getActualDefaultRingtoneUri(cntx,
 					RingtoneManager.TYPE_NOTIFICATION);
-			Log.d(tag, "default uri: " + defaulturi.toString());
-//			Ringtone rign = RingtoneManager.getRingtone(cntx, defaulturi);
-//			Log.d(tag, "ring: " + rign.toString() );
-
-			// Storage in SharedPreferences
+	
 			SharedPreferences.Editor editor = prefs.edit();
-			// prefs.edit().putString("NOTIFICATION_SOUND", olduri);
-			// prefs.edit().commit();
+
 			editor.putString("NOTIFICATION_SOUND", olduri);
 			editor.commit();
 
@@ -364,7 +357,7 @@ public class SystemSoundsUtil {
 			SharedPreferences prefs = cntx.getSharedPreferences(preferences,
 					Context.MODE_PRIVATE);
 			String olduri = prefs.getString("NOTIFICATION_SOUND", "");
-			Log.i("PREFERENCES", "olduri:" + olduri);
+
 			Uri uri = Uri.parse(olduri);
 			if (!olduri.equals("")) {
 				// put tone in the default (It's the same that write in System
@@ -373,7 +366,7 @@ public class SystemSoundsUtil {
 						RingtoneManager.TYPE_NOTIFICATION, uri);
 
 			} else {
-				Log.e(tag, "No se ha podido restaurar, no habia ningún valor");
+				Log.e(tag, "can't restore, there isn't a calue");
 			}
 		} catch (Exception e) {
 			Log.e(tag, "No se ha podido restaurar");
@@ -404,14 +397,14 @@ public class SystemSoundsUtil {
 			File fi = new File(fileName);
 			if (fi.exists()) {
 				boolean b = fi.delete();
-				Log.i(tag, "borrado el fichero: " + b);
+				Log.i(tag, "delete: " + b);
 
 			} else {
-				Log.i(tag, "no existe");
+				Log.i(tag, "no exists");
 			}
 
 			File file = new File(fileName);
-			Log.d("PREFERENCES", "Run hilo");
+
 			Log.i("PREFERENCES", "filename:" + fileName);
 
 			/* Open a connection to that URL. */
@@ -437,7 +430,6 @@ public class SystemSoundsUtil {
 			FileOutputStream fos = new FileOutputStream(file);
 			fos.write(baf.toByteArray());
 			fos.close();
-			Log.d("PREFERENCES", "Descargado fichero");
 
 		} catch (Exception e) {
 
@@ -468,7 +460,6 @@ public class SystemSoundsUtil {
 
 			String olduri = Settings.System.getString(
 					this.cntx.getContentResolver(), Settings.System.RINGTONE);
-			Log.d(tag, "old uri: " + olduri.toString());
 
 			// Storage in SharedPreferences
 
@@ -478,11 +469,9 @@ public class SystemSoundsUtil {
 			// Insert it into the database
 			Uri uri = MediaStore.Audio.Media.getContentUriForPath(k
 					.getAbsolutePath());
-			Log.d(tag, " uri: " + uri.toString());
 			Uri newUri = this.cntx.getContentResolver().insert(uri, values);
 
 			if (newUri != null) {
-				Log.d(tag, "new uri: " + newUri.toString());
 
 				// put tone in the default (It's the same that write in System
 				// Settings,
@@ -511,10 +500,10 @@ public class SystemSoundsUtil {
 						RingtoneManager.TYPE_RINGTONE, uri);
 
 			} else {
-				Log.e(tag, "No se ha podido restaurar, no habia ningún valor");
+				Log.e(tag, "cannot restore, there isnt any value");
 			}
 		} catch (Exception e) {
-			Log.e(tag, "No se ha podido restaurar");
+			Log.e(tag, "cannot restore");
 
 			e.printStackTrace();
 		}
@@ -561,7 +550,6 @@ public class SystemSoundsUtil {
 
 	public String changeVibrateRigntone(String setting) {
 		try {
-			Log.d(tag,"vibrtate setting");
 			int vibrateSetting = Integer.parseInt(setting);
 			if (vibrateSetting <= 2) {
 				audMng.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER,

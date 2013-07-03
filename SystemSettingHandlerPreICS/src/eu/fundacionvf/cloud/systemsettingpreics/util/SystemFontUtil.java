@@ -47,7 +47,7 @@ public class SystemFontUtil {
 	 */
 	public String changeFontScale(String scale){
 		try{
-			Log.d("SCALEE", "scale: " + scale);
+			Log.d("SystemSettingHandler", "scale: " + scale);
 			Intent i = new Intent("eu.fundacionvf.ActionStartService");
 			float esc=Float.parseFloat(scale);
 			i.putExtra("scale",esc);	
