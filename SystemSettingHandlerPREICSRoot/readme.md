@@ -67,11 +67,12 @@ Curently, SystemSettingParams can modify this params:
 
 
 ## History log
-- 0.1 - basic functionality on SystemSettingHandlerPREICSRoot
-- 0.2 - Implements Cloud4All Communication
-- 0.3 - More fucntionality
+- 0.1 - basic functionality on SystemSettingHandler.
+- 0.2 - Implements Cloud4All Communication.
+- 0.3 - Implements more configuration Params.
+- 0.4 - Solve Bugs and add Test Proyects.
 
 ## Bugs and decisions
-- Bug in notification Sound and Rigntone, sometimes don't get insert to media ContentProvider database the new file.
+
 
 
