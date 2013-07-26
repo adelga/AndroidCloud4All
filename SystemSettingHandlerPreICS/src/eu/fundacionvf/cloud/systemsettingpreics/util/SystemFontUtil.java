@@ -22,18 +22,18 @@ package eu.fundacionvf.cloud.systemsettingpreics.util;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+
 /**
  * This class contains utility methods.
- *
+ * 
  * @author adelga38@corp.vodafone.es (Alberto Delgado García)
  */
 public class SystemFontUtil {
 
 	Context cntx;
-	
-	
+
 	public SystemFontUtil(Context cntx) {
-		
+
 		this.cntx = cntx;
 	}
 
@@ -45,18 +45,22 @@ public class SystemFontUtil {
 	 *            , font size (1.0 it's normal, shouldn't more than 2.0)
 	 * @return String, "OK" if all run properly, "ERROR": in other case
 	 */
-	public String changeFontScale(String scale){
-		try{
+	public String changeFontScale(String scale) {
+		try {
 			Log.d("SystemSettingHandler", "scale: " + scale);
 			Intent i = new Intent("eu.fundacionvf.ActionStartService");
-			float esc=Float.parseFloat(scale);
-			i.putExtra("scale",esc);	
-			cntx.sendBroadcast(i);
-			return "OK";
-		}catch(Exception e){
+			float esc = Float.parseFloat(scale);
+			if (0.5 < esc && esc <= 2.0) {
+				i.putExtra("scale", esc);
+				cntx.sendBroadcast(i);
+				return "OK";
+			} else {
+				return "ERROR";
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 			return "ERROR";
 		}
-		
+
 	}
 }

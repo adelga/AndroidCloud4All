@@ -34,17 +34,19 @@ import eu.fundacionvf.cloud.systemsettingroot.persistence.CommunicationPersisten
 import eu.fundacionvf.cloud.systemsettingroot.util.SystemFontUtil;
 import eu.fundacionvf.cloud.systemsettingroot.util.SystemSettingUtil;
 import eu.fundacionvf.cloud.systemsettingroot.util.SystemSoundsUtil;
+
 /**
- * This class is a Service which invoke diferents methods to configure differents params.
- *
+ * This class is a Service which invoke differents methods to configure
+ * differents params.
+ * 
  * @author adelga38@corp.vodafone.es (Alberto Delgado García)
  */
 @SuppressLint("NewApi")
 public class SettingHandlerService extends Service {
 
-	private String MESSAGE_OK = "OK";
-	private String MESSAGE_ERROR = "ERROR";
-	private static final String MESSAGE_ERROR_PERMISSIONS = "ERROR: Need Root Permissions";
+	public String MESSAGE_OK = "OK";
+	public String MESSAGE_ERROR = "ERROR";
+	public static final String MESSAGE_ERROR_PERMISSIONS = "ERROR: Need Root Permissions";
 
 	private static final String TAG = "CLOUD4ALL";
 
@@ -82,18 +84,18 @@ public class SettingHandlerService extends Service {
 			CloudIntent cloudinfo = CloudIntent.intentToCloudIntent(intent);
 			if (cloudinfo != null) {
 				int event = cloudinfo.getIdEvent();
-                int action = cloudinfo.getIdAction();
+				int action = cloudinfo.getIdAction();
 				// Switch to launch different process by Event Identifier
 				switch (event) {
 				case CommunicationPersistence.EVENT_CONFIGURE_SYSTEM_SETTINGS:
 					Log.i(TAG, "Configure Root");
-					configure(cloudinfo);
-					response(MESSAGE_OK,action);
+					
+					response(configure(cloudinfo), action);
 					break;
 				case CommunicationPersistence.EVENT_RESTORE_SYSTEM_SETTINGS:
 					Log.i(TAG, "restore sound");
 					restore(cloudinfo);
-					response(MESSAGE_OK,action);
+					response(MESSAGE_OK, action);
 					break;
 
 				default:
@@ -109,7 +111,7 @@ public class SettingHandlerService extends Service {
 	private void restore(CloudIntent cloudinfo) {
 		try {
 			// SYSTEM
-			
+
 			// FONT
 
 			SystemFontUtil fonts = new SystemFontUtil(this);
@@ -131,7 +133,7 @@ public class SettingHandlerService extends Service {
 
 	}
 
-	private void response(String msg,int action) {
+	public void response(String msg, int action) {
 		try {
 			CloudIntent intent = new CloudIntent(
 					CommunicationPersistence.ACTION_ORCHESTRATOR,
@@ -146,7 +148,7 @@ public class SettingHandlerService extends Service {
 		}
 	}
 
-	private String configure(CloudIntent cloudinfo) {
+	public String configure(CloudIntent cloudinfo) {
 		// TODO Auto-generated method stub
 		String[] listaids;
 		try {
@@ -174,118 +176,127 @@ public class SettingHandlerService extends Service {
 			e.printStackTrace();
 			return MESSAGE_ERROR_PERMISSIONS;
 		}
-
-		String aux="";
+		String aux;
+		String msgError = " ";
 		try {
-			//SYSTEM
+			// SYSTEM
 			SystemSettingUtil system = new SystemSettingUtil(this);
-			String msgsystem ="";
-			
-			String acc= cloudinfo.getValue("enable_accessibility");
-			if(acc!=null){
-				aux=system.enableAccessibility(acc);
-				if(aux.equalsIgnoreCase(MESSAGE_OK)){
-					msgsystem= msgsystem + " / EnableAccessibility /";
+
+			String acc = cloudinfo.getValue("enable_accessibility");
+			if (acc != null) {
+				aux = system.enableAccessibility(acc);
+				if (!aux.equalsIgnoreCase(MESSAGE_OK)) {
+					msgError = msgError + " / EnableAccessibility /";
 				}
 			}
-			String add_serv= cloudinfo.getValue("add_accessibility_service");
-			if(add_serv!=null){
-				aux=system.addEnableAccessibilityService(add_serv);
-				if(aux.equalsIgnoreCase(MESSAGE_OK)){
-					msgsystem= msgsystem + " / Add accessibility Service /";
+			String add_serv = cloudinfo.getValue("add_accessibility_service");
+			if (add_serv != null) {
+				aux = system.addEnableAccessibilityService(add_serv);
+				if (!aux.equalsIgnoreCase(MESSAGE_OK)) {
+					msgError = msgError + " / Add accessibility Service /";
 				}
 			}
-			String rm_serv= cloudinfo.getValue("remove_accessibility_service");
-			if(rm_serv!=null){
-				aux=system.removeEnableAccessibilityService(rm_serv);
-				if(aux.equalsIgnoreCase(MESSAGE_OK)){
-					msgsystem= msgsystem + " / Remove Accesibility Service /";
+			String rm_serv = cloudinfo.getValue("remove_accessibility_service");
+			if (rm_serv != null) {
+				aux = system.removeEnableAccessibilityService(rm_serv);
+				if (!aux.equalsIgnoreCase(MESSAGE_OK)) {
+					msgError = msgError + " / Remove Accesibility Service /";
 				}
 			}
-			String ime= cloudinfo.getValue("default_ime");
-			if(ime!=null){
-				aux=system.changeInputMethod(ime);
-				if(aux.equalsIgnoreCase(MESSAGE_OK)){
-					msgsystem= msgsystem + " / Default IME /";
+			String ime = cloudinfo.getValue("default_ime");
+			if (ime != null) {
+				aux = system.changeInputMethod(ime);
+				if (!aux.equalsIgnoreCase(MESSAGE_OK)) {
+					msgError = msgError + " / DefaultIME /";
 				}
 			}
-			String tts= cloudinfo.getValue("tts_engine");
-			if(tts!=null){
-				aux=system.defaultTTS(tts);
-				if(aux.equalsIgnoreCase(MESSAGE_OK)){
-					msgsystem= msgsystem + " / Default TTS /";
+			String tts = cloudinfo.getValue("tts_engine");
+			if (tts != null) {
+				aux = system.defaultTTS(tts);
+				if (!aux.equalsIgnoreCase(MESSAGE_OK)) {
+					msgError = msgError + " / DefaultTTS /";
 				}
 			}
-			String ttsRate= cloudinfo.getValue("tts_rate");
-			if(ttsRate!=null){
-				aux=system.setRateTTS(ttsRate);
-				if(aux.equalsIgnoreCase(MESSAGE_OK)){
-					msgsystem= msgsystem + " / TTS rate /";
+			String ttsRate = cloudinfo.getValue("tts_rate");
+			if (ttsRate != null) {
+				aux = system.setRateTTS(ttsRate);
+				if (!aux.equalsIgnoreCase(MESSAGE_OK)) {
+					msgError = msgError + " / TTSRate /";
 				}
 			}
-			String ttsPitch= cloudinfo.getValue("tts_pitch");
-			if(ttsRate!=null){
-				aux=system.setPitchTTS(ttsPitch);
-				if(aux.equalsIgnoreCase(MESSAGE_OK)){
-					msgsystem= msgsystem + " / TTS Pitch/";
+			String ttsPitch = cloudinfo.getValue("tts_pitch");
+			if (ttsPitch != null) {
+				aux = system.setPitchTTS(ttsPitch);
+				if (!aux.equalsIgnoreCase(MESSAGE_OK)) {
+					msgError = msgError + " / TTSPitch /";
 				}
 			}
-			String touch= cloudinfo.getValue("touch_mode");
-			if(touch!=null){
-				aux=system.enableTouchMode(touch);
-				if(aux.equalsIgnoreCase(MESSAGE_OK)){
-					msgsystem= msgsystem + " / Touch Mode/";
-				}
-			}
-			
-			//SOUND
-			SystemSoundsUtil sound = new SystemSoundsUtil(this);
-			String msgsound="";
-			String lock= cloudinfo.getValue("lock_sound");
-			if(lock!=null){
-				aux=sound.changeLockSound(lock);
-				if(aux.equalsIgnoreCase(MESSAGE_OK)){
-					msgsound= msgsound + " / Lock sound/";
-				}
-			}
-			String unlock= cloudinfo.getValue("unlock_sound");
-			if(unlock!=null){
-				aux=sound.changeUnlockSound(unlock);
-				if(aux.equalsIgnoreCase(MESSAGE_OK)){
-					msgsound= msgsound + " / Unlock Sound/";
-				}
-			}
-			String low= cloudinfo.getValue("low_battery");
-			if(low!=null){
-				aux=sound.changeLowBatterySound(low);
-				if(aux.equalsIgnoreCase(MESSAGE_OK)){
-					msgsound= msgsound + " / Low_battery sound/";
-				}
-			}
-			String tick= cloudinfo.getValue("tick_sound");
-			if(tick!=null){
-				aux=sound.changeTickSound(tick);
-				if(aux.equalsIgnoreCase(MESSAGE_OK)){
-					msgsound= msgsound + " / Tick sound/";
+			String touch = cloudinfo.getValue("touch_mode");
+			if (touch != null) {
+				aux = system.enableTouchMode(touch);
+				if (!aux.equalsIgnoreCase(MESSAGE_OK)) {
+					msgError = msgError + " / TouchMode /";
 				}
 			}
 
-			
-			//FONT
+			// SOUND
+			SystemSoundsUtil sound = new SystemSoundsUtil(this);
+			String lock = cloudinfo.getValue("lock_sound");
+			if (lock != null) {
+				aux = sound.changeLockSound(lock);
+				if (!aux.equalsIgnoreCase(MESSAGE_OK)) {
+					msgError = msgError + " / LockSound /";
+				}
+			}
+			String unlock = cloudinfo.getValue("unlock_sound");
+			if (unlock != null) {
+				aux = sound.changeUnlockSound(unlock);
+				if (!aux.equalsIgnoreCase(MESSAGE_OK)) {
+					msgError = msgError + " / UnlockSound /";
+				}
+			}
+			String low = cloudinfo.getValue("low_battery");
+			if (low != null) {
+				aux = sound.changeLowBatterySound(low);
+				if (!aux.equalsIgnoreCase(MESSAGE_OK)) {
+					msgError = msgError + " / LowBatterySound/";
+				}
+			}
+			String tick = cloudinfo.getValue("tick_sound");
+			if (tick != null) {
+				aux = sound.changeTickSound(tick);
+				if (!aux.equalsIgnoreCase(MESSAGE_OK)) {
+					msgError = msgError + " / TickSound /";
+				}
+			}
+
+			// FONT
 			SystemFontUtil fonts = new SystemFontUtil(this);
 
 			String scaleFont = cloudinfo.getValue("font_scale");
 			if (scaleFont != null) {
 				Log.i(TAG, "configure font_scale");
 
-				fonts.changeFontScale(scaleFont);
+				if(!fonts.changeFontScale(scaleFont).equalsIgnoreCase(MESSAGE_OK)) {
+					msgError = msgError + " / changeFontScale /";
+				}
 			}
 			String urlMode = cloudinfo.getValue("regular_font_mode");
 			String urlFont = cloudinfo.getValue("regular_font");
 			if (urlFont != null && urlMode != null) {
-				fonts.changeRegularFontType(Integer.parseInt(urlMode), urlFont);
+				if (!fonts.changeRegularFontType(Integer.parseInt(urlMode),
+						urlFont).equalsIgnoreCase(MESSAGE_OK)) {
+					msgError = msgError + " / RegularFont/";
+				}
+
 			}
-			return MESSAGE_OK;
+
+			if (msgError.equalsIgnoreCase(" ")) {
+				return MESSAGE_OK;
+			} else {
+				return "ERROR:" + msgError;
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return MESSAGE_ERROR;

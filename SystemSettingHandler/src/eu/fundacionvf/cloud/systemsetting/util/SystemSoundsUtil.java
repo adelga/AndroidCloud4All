@@ -38,9 +38,10 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
+
 /**
  * This class contains utility methods.
- *
+ * 
  * @author adelga38@corp.vodafone.es (Alberto Delgado García)
  */
 public class SystemSoundsUtil {
@@ -58,12 +59,12 @@ public class SystemSoundsUtil {
 	public SystemSoundsUtil(Context cntx) {
 		super();
 
-	
 		this.cntx = cntx;
 		audMng = (AudioManager) cntx.getSystemService(Context.AUDIO_SERVICE);
-		Log.d(tag, "append for last audible: " 
-				+ Settings.System.getString(cntx.getContentResolver(),
-				Settings.System.APPEND_FOR_LAST_AUDIBLE));
+		Log.d(tag,
+				"append for last audible: "
+						+ Settings.System.getString(cntx.getContentResolver(),
+								Settings.System.APPEND_FOR_LAST_AUDIBLE));
 
 	}
 
@@ -73,25 +74,30 @@ public class SystemSoundsUtil {
 	 * 
 	 * @param enable
 	 *            , The value is boolean (1 or 0).
-	 * @return void
+	  * @return String, "OK" if change successfully , "ERROR" if not
 	 * 
 	 */
 
-	public void enableSoundEffects(String enable) {
+	public String enableSoundEffects(String enable) {
 		try {
 
-			Log.d(tag,
-					"Sound effects: "
-							+ Settings.System.getInt(cntx.getContentResolver(),
-									Settings.System.SOUND_EFFECTS_ENABLED));
+//			Log.d(tag,
+//					"Sound effects: "
+//							+ Settings.System.getInt(cntx.getContentResolver(),
+//									Settings.System.SOUND_EFFECTS_ENABLED));
+
 			int efect = Integer.parseInt(enable);
-			if (efect == 0 && efect == 1) {
+			if (efect == 0 || efect == 1) {
 				Settings.System.putInt(cntx.getContentResolver(),
 						Settings.System.SOUND_EFFECTS_ENABLED, efect);
+			}else{
+				return MESSAGE_ERROR;
 			}
+			return MESSAGE_OK;
 		} catch (Exception e) {
 			Log.e(tag, "Enable:  " + enable);
 			e.printStackTrace();
+			return MESSAGE_ERROR;
 		}
 	}
 
@@ -107,8 +113,13 @@ public class SystemSoundsUtil {
 	public String changeNotificationVolume(String level) {
 		try {
 			int volume = Integer.parseInt(level);
-			audMng.setStreamVolume(AudioManager.STREAM_NOTIFICATION, volume, 0);
-			return MESSAGE_OK;
+			if (volume>0 && volume <= 7) {
+				audMng.setStreamVolume(AudioManager.STREAM_NOTIFICATION,
+						volume, 0);
+				return MESSAGE_OK;
+			} else {
+				return MESSAGE_ERROR;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return MESSAGE_ERROR;
@@ -127,9 +138,14 @@ public class SystemSoundsUtil {
 	 */
 	public String changeMusicVolume(String level) {
 		try {
+
 			int volume = Integer.parseInt(level);
-			audMng.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
-			return MESSAGE_OK;
+			if (volume>0 && volume <= 15) {
+				audMng.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
+				return MESSAGE_OK;
+			} else {
+				return MESSAGE_ERROR;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return MESSAGE_ERROR;
@@ -149,8 +165,12 @@ public class SystemSoundsUtil {
 	public String changeAlarmVolume(String level) {
 		try {
 			int volume = Integer.parseInt(level);
-			audMng.setStreamVolume(AudioManager.STREAM_ALARM, volume, 0);
-			return MESSAGE_OK;
+			if (volume>0 && volume <= 7) {
+				audMng.setStreamVolume(AudioManager.STREAM_ALARM, volume, 0);
+				return MESSAGE_OK;
+			} else {
+				return MESSAGE_ERROR;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return MESSAGE_ERROR;
@@ -170,8 +190,12 @@ public class SystemSoundsUtil {
 	public String changeDTMFVolume(String level) {
 		try {
 			int volume = Integer.parseInt(level);
-			audMng.setStreamVolume(AudioManager.STREAM_DTMF, volume, 0);
-			return MESSAGE_OK;
+			if (volume>0 && volume <= 15) {
+				audMng.setStreamVolume(AudioManager.STREAM_DTMF, volume, 0);
+				return MESSAGE_OK;
+			} else {
+				return MESSAGE_ERROR;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return MESSAGE_ERROR;
@@ -191,8 +215,12 @@ public class SystemSoundsUtil {
 	public String changeRingVolume(String level) {
 		try {
 			int volume = Integer.parseInt(level);
-			audMng.setStreamVolume(AudioManager.STREAM_RING, volume, 0);
-			return MESSAGE_OK;
+			if (volume>0 && volume <= 7) {
+				audMng.setStreamVolume(AudioManager.STREAM_RING, volume, 0);
+				return MESSAGE_OK;
+			} else {
+				return MESSAGE_ERROR;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return MESSAGE_ERROR;
@@ -212,8 +240,12 @@ public class SystemSoundsUtil {
 	public String changeSystemVolume(String level) {
 		try {
 			int volume = Integer.parseInt(level);
-			audMng.setStreamVolume(AudioManager.STREAM_SYSTEM, volume, 0);
-			return MESSAGE_OK;
+			if (volume>0 && volume <= 7) {
+				audMng.setStreamVolume(AudioManager.STREAM_SYSTEM, volume, 0);
+				return MESSAGE_OK;
+			} else {
+				return MESSAGE_ERROR;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return MESSAGE_ERROR;
@@ -226,15 +258,20 @@ public class SystemSoundsUtil {
 	 * SystemSoundUtil because an AudioManager instance is necessary.
 	 * 
 	 * @param level
-	 *            , volume between 0-7
+	 *            , volume between 0-5
 	 * @return String, "OK" if change successfully , "ERROR" if not
 	 * 
 	 */
 	public String changeVoiceCallVolume(String level) {
 		try {
 			int volume = Integer.parseInt(level);
-			audMng.setStreamVolume(AudioManager.STREAM_VOICE_CALL, volume, 0);
-			return MESSAGE_OK;
+			if (volume>0 && volume <= 5) {
+				audMng.setStreamVolume(AudioManager.STREAM_VOICE_CALL, volume,
+						0);
+				return MESSAGE_OK;
+			} else {
+				return MESSAGE_ERROR;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return MESSAGE_ERROR;
@@ -253,16 +290,16 @@ public class SystemSoundsUtil {
 	 * @return void
 	 * 
 	 */
-	public void changeNotificationSound(String urlsound) {
+	public String changeNotificationSound(String urlsound) {
 		String path = Environment.getExternalStorageDirectory()
 				+ "/cloud4AllSound/";
-		String fileName = "notificationsound.ogg";
+		String fileName = urlsound.substring(urlsound.lastIndexOf("/")+1);
 		try {
 			URL url = new URL(urlsound);
 			File myDir = new File(path);
 			myDir.mkdir();
 			File file = new File(path, fileName);
-			Log.d("PREFERENCES", "Run hilo");
+			Log.d("PREFERENCES", "Run");
 			Log.i("PREFERENCES", "filename:" + fileName);
 
 			/* Open a connection to that URL. */
@@ -288,18 +325,19 @@ public class SystemSoundsUtil {
 			FileOutputStream fos = new FileOutputStream(file);
 			fos.write(baf.toByteArray());
 			fos.close();
-			Log.d("PREFERENCES", "Descargado fichero");
+			Log.d("PREFERENCES", "File Download");
 
 		} catch (Exception e) {
 
 			e.printStackTrace();
-
+			return MESSAGE_ERROR;
 		}
 
 		try {
 			// String path = Environment.getExternalStorageState()+
 			// "/cloud4AllSound/";
-			File k = new File(path, "notificationsound.ogg"); // path is a file
+			Log.d(tag, "name: "+ urlsound.substring(urlsound.lastIndexOf("/")+1));
+			File k = new File(path, urlsound.substring(urlsound.lastIndexOf("/")+1)); // path is a file
 																// to
 																// /sdcard/media/ringtone
 
@@ -308,7 +346,7 @@ public class SystemSoundsUtil {
 
 			ContentValues values = new ContentValues();
 			values.put(MediaStore.MediaColumns.DATA, k.getAbsolutePath());
-			values.put(MediaStore.MediaColumns.TITLE, "My Song title");
+			values.put(MediaStore.MediaColumns.TITLE, urlsound.substring(urlsound.lastIndexOf("/")+1));
 			values.put(MediaStore.MediaColumns.SIZE, k.getTotalSpace());
 			values.put(MediaStore.MediaColumns.MIME_TYPE, "audio/mp3");
 			values.put(MediaStore.Audio.Media.ARTIST, "What");
@@ -342,9 +380,11 @@ public class SystemSoundsUtil {
 			// but without need to change)
 			RingtoneManager.setActualDefaultRingtoneUri(this.cntx,
 					RingtoneManager.TYPE_NOTIFICATION, newUri);
+			return MESSAGE_OK;
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			return MESSAGE_ERROR;
 		}
 	}
 
@@ -362,7 +402,7 @@ public class SystemSoundsUtil {
 						RingtoneManager.TYPE_NOTIFICATION, uri);
 
 			} else {
-				Log.e(tag, "No se ha podido restaurar, no habia ningún valor");
+				Log.e(tag, "cant restore");
 			}
 		} catch (Exception e) {
 			Log.e(tag, "No se ha podido restaurar");
@@ -383,14 +423,14 @@ public class SystemSoundsUtil {
 	 * @return void
 	 * 
 	 */
-	public void changeRingtoneSound(String urlsound) {
+	public String changeRingtoneSound(String urlsound) {
 		String fileName = Environment.getExternalStorageDirectory()
 				+ "/cloud4AllSound/" + "ringtonesound.ogg";
 
 		try {
 			URL url = new URL(urlsound); // you can write here any link
 			File file = new File(fileName);
-			Log.d("PREFERENCES", "Run hilo");
+			Log.d("PREFERENCES", "Run threat");
 			Log.i("PREFERENCES", "filename:" + fileName);
 
 			/* Open a connection to that URL. */
@@ -421,6 +461,7 @@ public class SystemSoundsUtil {
 		} catch (Exception e) {
 
 			e.printStackTrace();
+			return MESSAGE_ERROR;
 
 		}
 
@@ -466,9 +507,10 @@ public class SystemSoundsUtil {
 			// but without need to change)
 			RingtoneManager.setActualDefaultRingtoneUri(this.cntx,
 					RingtoneManager.TYPE_RINGTONE, newUri);
-
+return MESSAGE_OK;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return MESSAGE_ERROR;
 		}
 	}
 

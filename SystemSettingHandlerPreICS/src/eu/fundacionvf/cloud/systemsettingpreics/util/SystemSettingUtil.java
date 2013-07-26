@@ -26,9 +26,10 @@ import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
 import eu.fundacionvf.cloud.systemsettingpreics.DummyActivity;
+
 /**
  * This class contains utility methods.
- *
+ * 
  * @author adelga38@corp.vodafone.es (Alberto Delgado García)
  */
 public class SystemSettingUtil {
@@ -37,7 +38,7 @@ public class SystemSettingUtil {
 
 	private static final String MESSAGE_ERROR = "ERROR_system";
 
-	private static final String MESSAGE_OK =  "OK";
+	private static final String MESSAGE_OK = "OK";
 
 	private final String tag = "SystemSettingTAG";
 
@@ -49,35 +50,34 @@ public class SystemSettingUtil {
 		this.cntx = cntx;
 	}
 
-
-
 	/**
 	 * Enable he haptic feedback (long presses, ...) This method needs a
 	 * instance of SystemSettingUtil because the context is necessary.
 	 * 
 	 * @param enable
 	 *            , The value is boolean (1 or 0).
-	 * @return void
+	 * @return String, "OK" if change successfully , "ERROR" if not
 	 * 
 	 */
 
-	public void enableHapticFeedBack(String enable) {
+	public String enableHapticFeedBack(String enable) {
 		try {
-
-			Log.i(tag,
-					"HapticFeedback effects: "
-							+ Settings.System.getInt(cntx.getContentResolver(),
-									Settings.System.HAPTIC_FEEDBACK_ENABLED));
 
 			int efect = Integer.parseInt(enable);
 			if (efect == 0 || efect == 1) {
-				Settings.System.putInt(cntx.getContentResolver(),
-						Settings.System.HAPTIC_FEEDBACK_ENABLED, efect);
+				if (Settings.System.putInt(cntx.getContentResolver(),
+						Settings.System.HAPTIC_FEEDBACK_ENABLED, efect))
+					return MESSAGE_OK;
+				else
+					return MESSAGE_ERROR;
 			}
+
 		} catch (Exception e) {
 			Log.e(tag, "Enable:  " + enable);
 			e.printStackTrace();
+			return MESSAGE_ERROR;
 		}
+		return MESSAGE_ERROR;
 	}
 
 	/**
@@ -89,36 +89,27 @@ public class SystemSettingUtil {
 	 * @param level
 	 *            , if the mode is MANUAL, the level of brightness since 0(min)
 	 *            to 255 (max)
-	 * @return void
+	 * @return String, "OK" if change successfully , "ERROR" if not
 	 */
 
-	public void changeBrightness(int mode, int level) {
+	public String changeBrightness(int mode, int level) {
 		try {
-			SharedPreferences prefs = cntx.getSharedPreferences(preferences,
-					Context.MODE_PRIVATE);
-			int brightnessMode = Settings.System.getInt(
-					cntx.getContentResolver(),
-					Settings.System.SCREEN_BRIGHTNESS_MODE);
-			int brightness = Settings.System.getInt(cntx.getContentResolver(),
-					Settings.System.SCREEN_BRIGHTNESS);
-			prefs.edit().putInt("SCREEN_BRIGHTNESS_MODE", brightnessMode);
-			prefs.edit().putInt("SCREEN_BRIGHTNESS", brightness);
-			prefs.edit().commit();
 
 			if (mode == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC) {
 				Settings.System.putInt(cntx.getContentResolver(),
 						Settings.System.SCREEN_BRIGHTNESS_MODE,
 						Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
+				return MESSAGE_OK;
 
-			} else {
-				Settings.System.putInt(cntx.getContentResolver(),
+			} else if (mode == Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL) {
+				if (!Settings.System.putInt(cntx.getContentResolver(),
 						Settings.System.SCREEN_BRIGHTNESS_MODE,
-						Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+						Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL))
+					return MESSAGE_ERROR;
 
-				Settings.System.putInt(cntx.getContentResolver(),
-						Settings.System.SCREEN_BRIGHTNESS, level);// for
-																	// persistent
-																	// change
+				if (!Settings.System.putInt(cntx.getContentResolver(),
+						Settings.System.SCREEN_BRIGHTNESS, level))
+					return MESSAGE_ERROR;// for persistent change
 				Intent dummy = new Intent();
 				dummy.setClass(cntx, DummyActivity.class);
 				dummy.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -126,49 +117,15 @@ public class SystemSettingUtil {
 														// it's necessary an
 														// Activity,
 				cntx.startActivity(dummy);
-
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	public void restoreBrightness() {
-		try {
-			SharedPreferences prefs = cntx.getSharedPreferences(preferences,
-					Context.MODE_PRIVATE);
-			int brightnessMode = prefs.getInt("SCREEN_BRIGHTNESS_MODE",
-					Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
-			int brightness = prefs.getInt("SCREEN_BRIGHTNESS", 125);
-
-			if (brightnessMode == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC) {
-				Settings.System.putInt(cntx.getContentResolver(),
-						Settings.System.SCREEN_BRIGHTNESS_MODE,
-						Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
+				return MESSAGE_OK;
 
 			} else {
-				Settings.System.putInt(cntx.getContentResolver(),
-						Settings.System.SCREEN_BRIGHTNESS_MODE,
-						Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
-
-				Settings.System.putInt(cntx.getContentResolver(),
-						Settings.System.SCREEN_BRIGHTNESS, brightness);// for
-																		// persistent
-																		// change
-				Intent dummy = new Intent();
-				dummy.setClass(cntx, DummyActivity.class);
-				dummy.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				dummy.putExtra("brightness", brightness); // For the instant
-															// change
-															// it's necessary an
-															// Activity,
-				cntx.startActivity(dummy);
-
+				return MESSAGE_ERROR;
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return MESSAGE_OK;
 		}
 
 	}
@@ -179,28 +136,26 @@ public class SystemSettingUtil {
 	 * 
 	 * @param timeoff
 	 *            , time of inactivity before turn off the screen.
-	 * @return void
+	 * @return String, "OK" if change successfully , "ERROR" if not
 	 */
-	public void changeTimeScreenOff(String timeoff) {
+	public String changeTimeScreenOff(String timeoff) {
 		try {
 			Log.i(tag,
 					"TIME OFF :  "
 							+ Settings.System.getString(
 									cntx.getContentResolver(),
 									Settings.System.SCREEN_OFF_TIMEOUT));
-			SharedPreferences prefs = cntx.getSharedPreferences(preferences,
-					Context.MODE_PRIVATE);
-			String time = Settings.System.getString(cntx.getContentResolver(),
-					Settings.System.SCREEN_OFF_TIMEOUT);
-			prefs.edit().putString("SCREEN_OFF_TIMEOUT", time);
-			prefs.edit().commit();
 
-			Settings.System.putString(cntx.getContentResolver(),
-					Settings.System.SCREEN_OFF_TIMEOUT, timeoff);
-
+			int time = Integer.parseInt(timeoff);
+			if (Settings.System.putLong(cntx.getContentResolver(),
+					Settings.System.SCREEN_OFF_TIMEOUT, time))
+				return MESSAGE_OK;
+			else
+				return MESSAGE_ERROR;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return MESSAGE_ERROR;
+
 		}
 
 	}
@@ -215,7 +170,7 @@ public class SystemSettingUtil {
 					Settings.System.SCREEN_OFF_TIMEOUT, time);
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 
@@ -228,84 +183,64 @@ public class SystemSettingUtil {
 	 * @param dim
 	 *            , boolean, if it's true the screen put dim mode before turn
 	 *            off.
-	 * @return void
+	 * @return String, "OK" if change successfully , "ERROR" if not
 	 */
 
-	public void changeDimScreen(boolean dim) {
+	public String changeDimScreen(boolean dim) {
 		try {
 			if (Build.VERSION.SDK_INT < 17) {
 				SharedPreferences prefs = cntx.getSharedPreferences(
 						preferences, Context.MODE_PRIVATE);
 
-				String dm = Settings.System.getString(
-						cntx.getContentResolver(), Settings.System.DIM_SCREEN);
-				if (dm != null) {
-					if (dm.equals("1")) {
-						prefs.edit().putBoolean("DIM_SCREEN", true);
-						prefs.edit().commit();
-					} else {
-						prefs.edit().putBoolean("DIM_SCREEN", false);
-						prefs.edit().commit();
-					}
-				}
 				if (dim) {
-					Settings.System.putString(cntx.getContentResolver(),
-							Settings.System.DIM_SCREEN, "1");
+					if (Settings.System.putString(cntx.getContentResolver(),
+							Settings.System.DIM_SCREEN, "1"))
+						return MESSAGE_OK;
+					else
+						return MESSAGE_ERROR;
 				} else {
-					Settings.System.putString(cntx.getContentResolver(),
-							Settings.System.DIM_SCREEN, "0");
+					if (Settings.System.putString(cntx.getContentResolver(),
+							Settings.System.DIM_SCREEN, "0"))
+						return MESSAGE_OK;
+					else
+						return MESSAGE_ERROR;
 				}
 			} else {
 				Log.d(tag, "not available for this android version");
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
-	public void restoreDimScreen() {
-		try {
-			SharedPreferences prefs = cntx.getSharedPreferences(preferences,
-					Context.MODE_PRIVATE);
-
-			boolean dm = prefs.getBoolean("DIM_SCREEN", false);
-
-			if (dm) {
-				Settings.System.putString(cntx.getContentResolver(),
-						Settings.System.DIM_SCREEN, "1");
-			} else {
-				Settings.System.putString(cntx.getContentResolver(),
-						Settings.System.DIM_SCREEN, "0");
+				return MESSAGE_ERROR;
 			}
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return MESSAGE_ERROR;
 		}
 
 	}
 
 	/**
-	 * Modity if the screen rotation change when the Accelerometer sensor notify a change.
+	 * Modity if the screen rotation change when the Accelerometer sensor notify
+	 * a change.
 	 * 
 	 * @param enable
 	 *            , The value is boolean (1 or 0).
-	 * @return void
+	 * @return String, "OK" if change successfully , "ERROR" if not
 	 * 
 	 */
 	public String setAutoOrientationEnabled(String enabled) {
 		try {
 			int en = Integer.parseInt(enabled);
+			Log.d(tag, "en = " + en);
 			if (en == 0 || en == 1) {
-				Settings.System.putInt(cntx.getContentResolver(),
-						Settings.System.ACCELEROMETER_ROTATION, en);
-				return MESSAGE_OK;
-			}else{
+				if (Settings.System.putInt(cntx.getContentResolver(),
+						Settings.System.ACCELEROMETER_ROTATION, en))
+					return MESSAGE_OK;
+				else
+					return MESSAGE_ERROR;
+			} else {
 				return MESSAGE_ERROR;
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return MESSAGE_ERROR;
@@ -313,5 +248,39 @@ public class SystemSettingUtil {
 		}
 	}
 
+	/**
+	 * Modify the default screen rotation when no other policy applies This
+	 * method needs a instance of SystemSettingUtil because the context is
+	 * necessary (Just run properly with auto_rotation disable).
+	 * 
+	 * @param rotation
+	 *            , 0-> 0 Dregree;1-> 90 Dregree;2-> 180 Dregree;3-> 270
+	 *            Dregree; .
+	 * @return String, "OK" if change successfully , "ERROR" if not
+	 * 
+	 */
+
+	public String changeDefaultRotation(String rotation) {
+		try {
+			if (Build.VERSION.SDK_INT > 11) {
+				int rot = Integer.parseInt(rotation);
+				if (rot >= 0 && rot <= 3) {
+					if (Settings.System.putInt(cntx.getContentResolver(),
+							"user_rotation", rot))
+						return MESSAGE_OK;
+					else
+						return MESSAGE_ERROR;
+				}
+			} else {
+				return MESSAGE_ERROR;
+			}
+
+		} catch (Exception e) {
+			Log.e(tag, "Enable:  " + rotation);
+			e.printStackTrace();
+			return MESSAGE_ERROR;
+		}
+		return MESSAGE_ERROR;
+	}
 
 }

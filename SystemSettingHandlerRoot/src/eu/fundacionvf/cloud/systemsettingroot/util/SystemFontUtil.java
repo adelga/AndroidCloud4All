@@ -35,9 +35,10 @@ import android.os.Environment;
 import android.os.RemoteException;
 import android.provider.Settings;
 import android.util.Log;
+
 /**
  * This class contains utility methods.
- *
+ * 
  * @author adelga38@corp.vodafone.es (Alberto Delgado García)
  */
 public class SystemFontUtil {
@@ -47,7 +48,7 @@ public class SystemFontUtil {
 	private static final String TAG = "SystemFontUtil";
 	private static final String MESSAGE_ERROR = "ERROR_FONT";
 	private static final String MESSAGE_OK = "OK";
-private Configuration mCurConfig;
+	private Configuration mCurConfig;
 
 	private Context cntx;
 
@@ -57,7 +58,8 @@ private Configuration mCurConfig;
 		this.cntx = cntx;
 		try {
 			mCurConfig = ActivityManagerNative.getDefault().getConfiguration();
-			Log.d(TAG, "Native configuration before sclae: " + mCurConfig.fontScale);
+			Log.d(TAG, "Native configuration before sclae: "
+					+ mCurConfig.fontScale);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -73,17 +75,21 @@ private Configuration mCurConfig;
 	 * @return String, "OK" if all run properly, "ERROR": in other case
 	 */
 	public String changeFontScale(String scale) {
-		//Check the scale can cast to float
+		// Check the scale can cast to float
 		try {
 			float f = Float.parseFloat(scale);
-			Log.d(TAG, "float antes de String: " + mCurConfig.fontScale);
+			Log.d(TAG, "before configure: " + mCurConfig.fontScale);
 
-			Settings.System.putString(cntx.getContentResolver(),
-					Settings.System.FONT_SCALE, scale);
-			mCurConfig.fontScale=f;
-			 ActivityManagerNative.getDefault().updatePersistentConfiguration(this.mCurConfig);
-			return "OK";
-		}catch(NumberFormatException ne){
+			if (f >= 0.5 && f <= 2.0) {
+				Settings.System.putString(cntx.getContentResolver(),
+						Settings.System.FONT_SCALE, scale);
+				mCurConfig.fontScale = f;
+				ActivityManagerNative.getDefault()
+						.updatePersistentConfiguration(this.mCurConfig);
+				return MESSAGE_OK;
+			} else
+				return MESSAGE_ERROR;
+		} catch (NumberFormatException ne) {
 			Log.e(TAG, "Scale not have the properly format");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -106,7 +112,7 @@ private Configuration mCurConfig;
 		if (local == LOCAL_URL) {
 			Log.d(TAG, "local URL");
 			try {
-				//Incluir espera
+				// Incluir espera
 				String[] hin1 = { "su", "-c",
 						"cp /system/fonts/Roboto-Regular.ttf /system/fonts/Roboto-Regular_org.ttf" };
 
@@ -117,7 +123,7 @@ private Configuration mCurConfig;
 
 				Runtime.getRuntime().exec(hin2);
 
-				return "OK";
+				return MESSAGE_OK;
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -136,14 +142,14 @@ private Configuration mCurConfig;
 
 				Runtime.getRuntime().exec(hin1).waitFor();
 
-				downlName= "/mnt/sdcard/cloud4AllFont/newType.ttf";
-				
+				downlName = "/mnt/sdcard/cloud4AllFont/newType.ttf";
+
 				String[] hin2 = { "su", "-c",
 						"cp " + downlName + " /system/fonts/Roboto-Regular.ttf" };
 
 				Runtime.getRuntime().exec(hin2);
 
-				return "OK";
+				return MESSAGE_OK;
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -167,15 +173,16 @@ private Configuration mCurConfig;
 		}
 
 	}
-	
-	
+
 	/**
 	 * Configure the bold font type. This method needs a instance of
 	 * SystemFontUtil because the context is necessary REBOOT it's necessary
 	 * 
-	 * @param local, if the font it's in local (0) or remote (1)
-	 * @param url, the address of new font type
-	 * @return String, "OK" if all run properly, "ERROR": in other case
+	 * @param local
+	 *            , if the font it's in local (0) or remote (1)
+	 * @param url
+	 *            , the address of new font type
+	 * @return String, MESSAGE_OK if all run properly, "ERROR": in other case
 	 */
 	public String changeBoldFontType(int local, String url) {
 
@@ -192,7 +199,7 @@ private Configuration mCurConfig;
 
 				Runtime.getRuntime().exec(hin2);
 
-				return "OK";
+				return MESSAGE_OK;
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -216,7 +223,7 @@ private Configuration mCurConfig;
 
 				Runtime.getRuntime().exec(hin2);
 
-				return "OK";
+				return MESSAGE_OK;
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -224,8 +231,7 @@ private Configuration mCurConfig;
 			}
 		}
 	}
-	
-	
+
 	public void restoreFontBold() {
 		try {
 
@@ -241,14 +247,16 @@ private Configuration mCurConfig;
 		}
 
 	}
-	
+
 	/**
 	 * Configure the Italic font type. This method needs a instance of
 	 * SystemFontUtil because the context is necessary REBOOT it's necessary
 	 * 
-	 * @param local, if the font it's in local (0) or remote (1)
-	 * @param url, the address of new font type
-	 * @return String, "OK" if all run properly, "ERROR": in other case
+	 * @param local
+	 *            , if the font it's in local (0) or remote (1)
+	 * @param url
+	 *            , the address of new font type
+	 * @return String, MESSAGE_OK if all run properly, "ERROR": in other case
 	 */
 	public String changeItalicFontType(int local, String url) {
 
@@ -265,7 +273,7 @@ private Configuration mCurConfig;
 
 				Runtime.getRuntime().exec(hin2);
 
-				return "OK";
+				return MESSAGE_OK;
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -289,7 +297,7 @@ private Configuration mCurConfig;
 
 				Runtime.getRuntime().exec(hin2);
 
-				return "OK";
+				return MESSAGE_OK;
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -297,8 +305,7 @@ private Configuration mCurConfig;
 			}
 		}
 	}
-	
-	
+
 	public void restoreFontItalic() {
 		try {
 
@@ -350,9 +357,8 @@ private Configuration mCurConfig;
 			FileOutputStream fos = new FileOutputStream(file);
 			fos.write(baf.toByteArray());
 			fos.close();
-			String down= file.toURI().toString();
-			Log.d("PREFERENCES", "Descargado fichero en "
-					+ down.substring(5));
+			String down = file.toURI().toString();
+			Log.d("PREFERENCES", "Descargado fichero en " + down.substring(5));
 
 			return down.substring(5);
 

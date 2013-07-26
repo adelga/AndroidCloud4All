@@ -1,7 +1,8 @@
 /*
 SettingHandlerService class
-This class extends from Service, manage all configuration changes.  It's for Android version since Eclair (API 7) until HONEYCOMB (API 12). 
+This class extends from Service, manage all configuration changes.  It's for Android version since 4.0 (API 14, ICS). 
 You should install this app as a normal app, You don't need special permissions to use this app.
+
 Copyright (c) 2013, Vodafone Spain Foundation
 All rights reserved.
 
@@ -19,21 +20,23 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 package eu.fundacionvf.cloud.systemsettingpreics;
 
+import org.json.JSONException;
+
 import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.StrictMode;
 import android.util.Log;
-
-import eu.fundacionvf.cloud.systemsettingpreics.persistence.*;
+import eu.fundacionvf.cloud.systemsettingpreics.CloudIntent;
+import eu.fundacionvf.cloud.systemsettingpreics.persistence.CommunicationPersistence;
 import eu.fundacionvf.cloud.systemsettingpreics.util.*;
 
 @SuppressLint("NewApi")
 public class SettingHandlerService extends Service {
 
-	private String MESSAGE_OK = "OK";
-	private static final String TAG = "CLOUD4ALL";
+	public String MESSAGE_OK = "OK";
+	public static final String TAG = "CLOUD4ALL";
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -56,11 +59,13 @@ public class SettingHandlerService extends Service {
 
 	@Override
 	public void onDestroy() {
+		// TODO Auto-generated method stub
 		super.onDestroy();
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		// TODO Auto-generated method stub
 		try {
 			CloudIntent cloudinfo = CloudIntent.intentToCloudIntent(intent);
 			if (cloudinfo != null) {
@@ -105,12 +110,6 @@ public class SettingHandlerService extends Service {
 
 	}
 
-	@Override
-	public void onStart(Intent intent, int startId) {
-		// TODO Auto-generated method stub
-		super.onStart(intent, startId);
-	}
-
 	private void response(String msg, int action) {
 		try {
 			CloudIntent intent = new CloudIntent(
@@ -121,13 +120,15 @@ public class SettingHandlerService extends Service {
 			intent.setParams("message", msg);
 			sendBroadcast(intent);
 		} catch (Exception e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	private String configure(CloudIntent cloudinfo) {
+	public String configure(CloudIntent cloudinfo) {
+		// TODO Auto-generated method stub
 		String[] listaids;
+		String msgError = " ";
 		try {
 			listaids = cloudinfo.getArrayIds();
 
@@ -143,74 +144,114 @@ public class SettingHandlerService extends Service {
 			String brillo = cloudinfo.getValue("brightness");
 			String brilloModo = cloudinfo.getValue("brightness_mode");
 			if (brillo != null && brilloModo != null) {
-				system.changeBrightness(Integer.parseInt(brilloModo),
-						Integer.parseInt(brillo));
+				try {
+					if (!system.changeBrightness(Integer.parseInt(brilloModo),
+							Integer.parseInt(brillo)).equalsIgnoreCase(
+							MESSAGE_OK))
+						msgError = msgError + " / changeBrightness /";
+				} catch (Exception e) {
+					msgError = msgError + " / changeBrightness /";
+				}
 			}
 			String screen_time_off = cloudinfo.getValue("screen_time_off");
 
 			if (screen_time_off != null) {
-				system.changeTimeScreenOff(screen_time_off);
+				if (!system.changeTimeScreenOff(screen_time_off)
+						.equalsIgnoreCase(MESSAGE_OK)) {
+					msgError = msgError + " / changeScreenTime /";
+
+				}
+				;
 			}
 			String dim_screen = cloudinfo.getValue("dim_screen");
 
 			if (dim_screen != null) {
-				if (dim_screen.contains("0"))
-					system.changeDimScreen(false);
-				else
-					system.changeDimScreen(true);
+				if (dim_screen.contains("0")) {
+					if (!system.changeDimScreen(false).equalsIgnoreCase(
+							MESSAGE_OK)) {
+						msgError = msgError + " / changeDim /";
+					}
+				} else if (dim_screen.contains("1")) {
+					if (!system.changeDimScreen(true).equals(MESSAGE_OK)) {
+						msgError = msgError + " / changeDim /";
+					}
+				}else{
+					msgError = msgError + " / changeDim /";
+
+				}
 
 			}
 			String haptic_feedback = cloudinfo.getValue("haptic_feedback");
 			if (haptic_feedback != null) {
-				system.enableHapticFeedBack(haptic_feedback);
+				if (!system.enableHapticFeedBack(haptic_feedback)
+						.equalsIgnoreCase(MESSAGE_OK)) {
+					msgError = msgError + " / changeHaptic /";
+				}
 			}
-
 			String auto_rotation = cloudinfo.getValue("auto_rotation");
 			if (auto_rotation != null) {
-				system.setAutoOrientationEnabled(auto_rotation);
+				if (!system.setAutoOrientationEnabled(auto_rotation)
+						.equalsIgnoreCase(MESSAGE_OK)) {
+					msgError = msgError + " / changeAutoRotation /";
+				}
+			}
+			String default_rotation = cloudinfo.getValue("default_rotation");
+			if (default_rotation != null) {
+				if (!system.changeDefaultRotation(default_rotation)
+						.equalsIgnoreCase(MESSAGE_OK)) {
+					msgError = msgError + " / changeDefaultRotation /";
+				}
 			}
 
-			String msgSound = " ";
-
 			// sound
+
 			SystemSoundsUtil sound = new SystemSoundsUtil(this);
 
 			String notificationsound = cloudinfo.getValue("notification_sound");
 			if (notificationsound != null) {
-				sound.changeNotificationSound(notificationsound);
+				if (!sound.changeNotificationSound(notificationsound)
+						.equalsIgnoreCase(MESSAGE_OK)) {
+					msgError = msgError + " / changeNotificationSound /";
+				}
 			} else {
 				Log.e(TAG, "notification_sound null");
 			}
 
 			String ringtone = cloudinfo.getValue("ringtone_sound");
 			if (ringtone != null) {
-				sound.changeRingtoneSound(ringtone);
+				if (!sound.changeRingtoneSound(ringtone).equalsIgnoreCase(
+						MESSAGE_OK)) {
+					msgError = msgError + " / changeRingtoneSound /";
+				}
 			} else {
 				Log.e(TAG, "rigntone_sound null");
 			}
 			String sound_effects = cloudinfo.getValue("sound_effects");
 			if (sound_effects != null) {
-				sound.enableSoundEffects(sound_effects);
+				if (!sound.enableSoundEffects(sound_effects).equalsIgnoreCase(
+						MESSAGE_OK)) {
+					msgError = msgError + " / changeEnableSounds /";
+				}
 			}
 			String music_volume = cloudinfo.getValue("music_volume");
 			if (music_volume != null) {
 				if (!sound.changeMusicVolume(music_volume).equalsIgnoreCase(
 						MESSAGE_OK)) {
-					msgSound = msgSound + " / changeMusic /";
+					msgError = msgError + " / changeMusic /";
 				}
 			}
 			String alarm_volume = cloudinfo.getValue("alarm_volume");
 			if (alarm_volume != null) {
 				if (!sound.changeAlarmVolume(alarm_volume).equalsIgnoreCase(
 						MESSAGE_OK)) {
-					msgSound = msgSound + " / changeAlarm /";
+					msgError = msgError + " / changeAlarm /";
 				}
 			}
 			String dtmf_volume = cloudinfo.getValue("dtmf_volume");
 			if (dtmf_volume != null) {
 				if (!sound.changeDTMFVolume(dtmf_volume).equalsIgnoreCase(
 						MESSAGE_OK)) {
-					msgSound = msgSound + " / changeDTMF /";
+					msgError = msgError + " / changeDTMF /";
 				}
 			}
 			String notification_volume = cloudinfo
@@ -218,60 +259,47 @@ public class SettingHandlerService extends Service {
 			if (notification_volume != null) {
 				if (!sound.changeNotificationVolume(notification_volume)
 						.equalsIgnoreCase(MESSAGE_OK)) {
-					msgSound = msgSound + " / changeNotification /";
+					msgError = msgError + " / changeNotification /";
 				}
 			}
 			String ring_volume = cloudinfo.getValue("ring_volume");
 			if (ring_volume != null) {
 				if (!sound.changeRingVolume(ring_volume).equalsIgnoreCase(
 						MESSAGE_OK)) {
-					msgSound = msgSound + " / changeRING /";
+					msgError = msgError + " / changeRing /";
 				}
 			}
 			String system_volume = cloudinfo.getValue("system_volume");
 			if (system_volume != null) {
 				if (!sound.changeSystemVolume(system_volume).equalsIgnoreCase(
 						MESSAGE_OK)) {
-					msgSound = msgSound + " / changeSystem /";
+					msgError = msgError + " / changeSystem /";
 				}
 			}
 			String voice_call_volume = cloudinfo.getValue("voice_call_volume");
 			if (voice_call_volume != null) {
 				if (!sound.changeVoiceCallVolume(voice_call_volume)
 						.equalsIgnoreCase(MESSAGE_OK)) {
-					msgSound = msgSound + " / changeVOICE /";
+					msgError = msgError + " / changeVoice /";
 				}
 			}
-			String vibrate_notification = cloudinfo
-					.getValue("vibrate_notification");
-			if (vibrate_notification != null) {
-				if (!sound.changeVibrateNotification(vibrate_notification)
-						.equalsIgnoreCase(MESSAGE_OK)) {
-					msgSound = msgSound + " / vibrateNotification /";
-				}
-			}
-			String vibrate_rigntone = cloudinfo.getValue("vibrate_ringtone");
-			if (vibrate_rigntone != null) {
-				if (!sound.changeVibrateRigntone(vibrate_rigntone)
-						.equalsIgnoreCase(MESSAGE_OK)) {
-					msgSound = msgSound + " / vibrateRigntone /";
-				}
-			}
-
 			// font
 			SystemFontUtil font = new SystemFontUtil(this);
 			String font_scale = cloudinfo.getValue("font_scale");
 			if (font_scale != null) {
-				font.changeFontScale(font_scale);
+				if (!font.changeFontScale(font_scale).equalsIgnoreCase(
+						MESSAGE_OK)) {
+					msgError = msgError + " / changeFontScale /";
+				}
 			}
 
-			if (msgSound.equalsIgnoreCase("")) {
+			if (msgError.equalsIgnoreCase(" ")) {
 				return MESSAGE_OK;
 			} else {
-				return "ERROR: " + msgSound;
+				return "ERROR:" + msgError;
 			}
 
-		} catch (Exception e) {
+		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -280,7 +308,7 @@ public class SettingHandlerService extends Service {
 
 	@Override
 	public boolean onUnbind(Intent intent) {
-	
+		// TODO Auto-generated method stub
 		return super.onUnbind(intent);
 	}
 

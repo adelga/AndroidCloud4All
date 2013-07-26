@@ -95,7 +95,7 @@ public class SystemSoundsUtil {
 		try {
 
 			String[] hin1 = { "su", "-c",
-					"cp " + LOCK_SOUND + " " + LOCK_SOUND_COPY };
+					"cat " + LOCK_SOUND + " > " + LOCK_SOUND_COPY };
 
 			Runtime.getRuntime().exec(hin1).waitFor();
 
@@ -138,12 +138,11 @@ public class SystemSoundsUtil {
 		try {
 
 			String[] hin1 = { "su", "-c",
-					"cp " + LOCK_SOUND_COPY + " " + LOCK_SOUND };
+					"cat " + LOCK_SOUND_COPY + " > " + LOCK_SOUND };
 
 			Runtime.getRuntime().exec(hin1).waitFor();
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 
 		}
@@ -164,7 +163,7 @@ public class SystemSoundsUtil {
 		try {
 
 			String[] hin1 = { "su", "-c",
-					"cp " + UNLOCK_SOUND + " " + UNLOCK_SOUND_COPY };
+					"cat " + UNLOCK_SOUND + " > " + UNLOCK_SOUND_COPY };
 
 			Runtime.getRuntime().exec(hin1).waitFor();
 
@@ -207,7 +206,7 @@ public class SystemSoundsUtil {
 		try {
 
 			String[] hin1 = { "su", "-c",
-					"cp " + UNLOCK_SOUND_COPY + " " + UNLOCK_SOUND };
+					"cat  " + UNLOCK_SOUND_COPY + " > " + UNLOCK_SOUND };
 
 			Runtime.getRuntime().exec(hin1).waitFor();
 
@@ -232,7 +231,7 @@ public class SystemSoundsUtil {
 		try {
 
 			String[] hin1 = { "su", "-c",
-					"cp " + LOW_BATTERY_SOUND + " " + LOW_BATTERY_SOUND_COPY };
+					"cat  " + LOW_BATTERY_SOUND + " > " + LOW_BATTERY_SOUND_COPY };
 
 			Runtime.getRuntime().exec(hin1).waitFor();
 
@@ -275,7 +274,7 @@ public class SystemSoundsUtil {
 		try {
 
 			String[] hin1 = { "su", "-c",
-					"cp " + LOW_BATTERY_SOUND_COPY + " " + LOW_BATTERY_SOUND };
+					"cat " + LOW_BATTERY_SOUND_COPY + " > " + LOW_BATTERY_SOUND };
 
 			Runtime.getRuntime().exec(hin1).waitFor();
 
@@ -300,7 +299,7 @@ public class SystemSoundsUtil {
 		try {
 
 			String[] hin1 = { "su", "-c",
-					"cp " + EFFECT_TICK_SOUND + " " + EFFECT_TICK_SOUND_COPY };
+					"cat " + EFFECT_TICK_SOUND + " > " + EFFECT_TICK_SOUND_COPY };
 
 			Runtime.getRuntime().exec(hin1).waitFor();
 
@@ -343,16 +342,13 @@ public class SystemSoundsUtil {
 		try {
 
 			String[] hin1 = { "su", "-c",
-					"cp " + EFFECT_TICK_SOUND_COPY + " " + EFFECT_TICK_SOUND };
+					"cat " + EFFECT_TICK_SOUND_COPY + " > " + EFFECT_TICK_SOUND };
 
 			Runtime.getRuntime().exec(hin1).waitFor();
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-
 		}
-
 	}
 	
 

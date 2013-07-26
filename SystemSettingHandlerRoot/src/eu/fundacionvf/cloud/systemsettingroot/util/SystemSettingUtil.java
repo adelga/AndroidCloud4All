@@ -23,9 +23,10 @@ import android.content.Context;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
+
 /**
  * This class contains utility methods.
- *
+ * 
  * @author adelga38@corp.vodafone.es (Alberto Delgado García)
  */
 public class SystemSettingUtil {
@@ -45,10 +46,12 @@ public class SystemSettingUtil {
 	}
 
 	/**
-	 * Enable an accessibility Service  This method needs a
-	 * instance of SystemSettingUtil because the context is necessary.
+	 * Enable an accessibility Service This method needs a instance of
+	 * SystemSettingUtil because the context is necessary.
 	 * 
-	 * @param accesibility, its the packageName and the cAccessibilityService class which we want enable
+	 * @param accesibility
+	 *            , its the packageName and the cAccessibilityService class
+	 *            which we want enable
 	 * @return void
 	 * 
 	 */
@@ -67,11 +70,16 @@ public class SystemSettingUtil {
 		}
 
 	}
+
 	/**
-	 * Enable an accessibility Service, the difference with {@link enableAccessibility} is that this method don't disable the others accessibility Service. This method needs a
-	 * instance of SystemSettingUtil because the context is necessary.
+	 * Enable an accessibility Service, the difference with
+	 * {@link enableAccessibility} is that this method don't disable the others
+	 * accessibility Service. This method needs a instance of SystemSettingUtil
+	 * because the context is necessary.
 	 * 
-	 * @param nameService, its the packageName and the cAccessibilityService class which we want enable
+	 * @param nameService
+	 *            , its the packageName and the cAccessibilityService class
+	 *            which we want enable
 	 * @return void
 	 * 
 	 */
@@ -86,18 +94,20 @@ public class SystemSettingUtil {
 				// Service
 				Settings.Secure.putInt(cntx.getContentResolver(),
 						Settings.Secure.ACCESSIBILITY_ENABLED, 1); // Enable
-																	// accessibility
-				Settings.Secure
-						.putString(cntx.getContentResolver(),
-								Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES,
-								nameService); // Put
-																								// the
-																								// package
-																								// name
-																								// and
-																								// the
-																								// accesibility
-																								// service
+				String accEna = Settings.Secure.getString(
+						cntx.getContentResolver(),
+						Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+				Log.d(tag, "enable acc: " + accEna); // accessibility
+				Settings.Secure.putString(cntx.getContentResolver(),
+						Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES,
+						nameService); // Put
+										// the
+										// package
+										// name
+										// and
+										// the
+										// accesibility
+										// service
 				Settings.Secure.putInt(cntx.getContentResolver(),
 						Settings.Secure.ACCESSIBILITY_ENABLED, 1); // Enable
 																	// accessibility
@@ -112,10 +122,12 @@ public class SystemSettingUtil {
 	}
 
 	/**
-	 * Disable an accessibility Service. This method needs a
-	 * instance of SystemSettingUtil because the context is necessary.
+	 * Disable an accessibility Service. This method needs a instance of
+	 * SystemSettingUtil because the context is necessary.
 	 * 
-	 * @param nameService, its the packageName and the AccessibilityService class which we want enable
+	 * @param nameService
+	 *            , its the packageName and the AccessibilityService class which
+	 *            we want enable
 	 * @return void
 	 * 
 	 */
@@ -144,17 +156,8 @@ public class SystemSettingUtil {
 				Settings.Secure.putInt(cntx.getContentResolver(),
 						Settings.Secure.ACCESSIBILITY_ENABLED, 1); // Enable
 																	// accessibility
-				Settings.Secure
-						.putString(cntx.getContentResolver(),
-								Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES,
-								"<AccessibilityService Package>/<AccessivilityService Name>"); // Put
-																								// the
-																								// package
-																								// name
-																								// and
-																								// the
-																								// accesibility
-																								// service
+				Settings.Secure.putString(cntx.getContentResolver(),
+						Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES, "");
 				Settings.Secure.putInt(cntx.getContentResolver(),
 						Settings.Secure.ACCESSIBILITY_ENABLED, 1); // Enable
 																	// accessibility
@@ -167,11 +170,14 @@ public class SystemSettingUtil {
 		}
 
 	}
+
 	/**
-	 * Change the default InputMethod. This method needs a
-	 * instance of SystemSettingUtil because the context is necessary.
+	 * Change the default InputMethod. This method needs a instance of
+	 * SystemSettingUtil because the context is necessary.
 	 * 
-	 * @param nameIME, its the packageName and the InputMethodService class which we want enable
+	 * @param nameIME
+	 *            , its the packageName and the InputMethodService class which
+	 *            we want enable
 	 * @return void
 	 * 
 	 */
@@ -219,50 +225,39 @@ public class SystemSettingUtil {
 	}
 
 	/**
-	 * Enable/Disable TouchMode. This method needs a
-	 * instance of SystemSettingUtil because the context is necessary.
+	 * Enable/Disable TouchExplorationMode. This method needs a instance of
+	 * SystemSettingUtil because the context is necessary.
 	 * 
-	 * @param enable, 0 disable 1 enable
+	 * @param enable
+	 *            , 0 disable 1 enable
 	 * @return String, if can`t enable/disable return ERROR, if not OK.
 	 * 
 	 */
 	public String enableTouchMode(String enable) {
 		try {
 
-			if (Settings.Secure.getString(cntx.getContentResolver(),
+			if (!Settings.Secure.getString(cntx.getContentResolver(),
 					Settings.Secure.ACCESSIBILITY_ENABLED).contains("1")) {// The
-																			// accessibility
+																			// acc
 																			// should
 																			// be
 																			// enable
-				if (enable.equalsIgnoreCase("0")) { // Check if touch
-					// exploration is
-					// enabled
-					Settings.Secure.putInt(cntx.getContentResolver(),
-							Settings.Secure.TOUCH_EXPLORATION_ENABLED, 0);// disable
-																			// the
-																			// touch
-																			// exploration
-					Log.d(tag,
-							"touch exploration:  "
-									+ Settings.Secure.getString(
-											cntx.getContentResolver(),
-											Settings.Secure.TOUCH_EXPLORATION_ENABLED));
+				Settings.Secure.putInt(cntx.getContentResolver(),
+						Settings.Secure.ACCESSIBILITY_ENABLED, 1);
+			} // accessibility
 
-				} else if (enable.equalsIgnoreCase("1")) {
-					Settings.Secure.putInt(cntx.getContentResolver(),
-							Settings.Secure.TOUCH_EXPLORATION_ENABLED, 1);// enable
-																			// the
-																			// touch
-																			// exploration
-					Log.d(tag,
-							"touch exploration:  "
-									+ Settings.Secure.getString(
-											cntx.getContentResolver(),
-											Settings.Secure.TOUCH_EXPLORATION_ENABLED));
+			int en = Integer.valueOf(enable);
 
-				}
+			if (en == 0 || en == 1) { // Check if touch
+				// exploration is
+				// enabled
+				Settings.Secure.putInt(cntx.getContentResolver(),
+						Settings.Secure.TOUCH_EXPLORATION_ENABLED, en);
+
+			} else {
+				return MESSAGE_ERROR;
 			}
+
 			return MESSAGE_OK;
 		} catch (Exception e) {
 
@@ -270,11 +265,13 @@ public class SystemSettingUtil {
 			return MESSAGE_ERROR;
 		}
 	}
+
 	/**
-	 * Modify the default TTS Synth. This method needs a
-	 * instance of SystemSettingUtil because the context is necessary.
+	 * Modify the default TTS Synth. This method needs a instance of
+	 * SystemSettingUtil because the context is necessary.
 	 * 
-	 * @param tts, the TTSEngine package name.
+	 * @param tts
+	 *            , the TTSEngine package name.
 	 * @return String, if can`t enable/disable return ERROR, if not OK.
 	 * 
 	 */
@@ -289,20 +286,25 @@ public class SystemSettingUtil {
 			return MESSAGE_ERROR;
 		}
 	}
+
 	/**
-	 * Set the TTS Pitch. This method needs a
-	 * instance of SystemSettingUtil because the context is necessary.
+	 * Set the TTS Pitch. This method needs a instance of SystemSettingUtil
+	 * because the context is necessary.
 	 * 
-	 * @param pith, 0-500
+	 * @param pith
+	 *            , 0-500
 	 * @return String, if can`t configure return ERROR, if not OK.
 	 * 
 	 */
 	public String setPitchTTS(String pitch) {
 		try {
+			Log.d(tag, "TTS PITCH: " + pitch);
 			int p = Integer.parseInt(pitch);
+			Log.d(tag, "TTS p: " + p);
 			if (p >= 0 && p <= 500) {
-				Settings.Secure.putInt(cntx.getContentResolver(),
-						Settings.Secure.TTS_DEFAULT_PITCH, p);
+				if (!Settings.Secure.putInt(cntx.getContentResolver(),
+						Settings.Secure.TTS_DEFAULT_PITCH, p))
+					return MESSAGE_ERROR;
 
 				Settings.Secure.putInt(cntx.getContentResolver(),
 						Settings.Secure.ACCESSIBILITY_ENABLED, 0);
@@ -321,10 +323,11 @@ public class SystemSettingUtil {
 	}
 
 	/**
-	 * Set the TTS Rate. This method needs a
-	 * instance of SystemSettingUtil because the context is necessary.
+	 * Set the TTS Rate. This method needs a instance of SystemSettingUtil
+	 * because the context is necessary.
 	 * 
-	 * @param rate, 0-500
+	 * @param rate
+	 *            , 0-500
 	 * @return String, if can`t configure return ERROR, if not OK.
 	 * 
 	 */

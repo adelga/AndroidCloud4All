@@ -47,6 +47,7 @@ public class FileUtil {
 		try {
 			in = assetManager.open(nameAsset);
 			out = new FileOutputStream(dest);
+			Log.d("File", "in " + in.toString() + "  out: " + out.toString());
 			copyFile(in, out);
 			in.close();
 			in = null;
@@ -63,6 +64,7 @@ public class FileUtil {
 		byte[] buffer = new byte[1024];
 		int read;
 		while ((read = in.read(buffer)) != -1) {
+			Log.d("File", "buffer  read/write " + read);
 			out.write(buffer, 0, read);
 		}
 	}
