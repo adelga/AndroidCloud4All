@@ -63,11 +63,14 @@ Curently, SystemSettingParams can modify this params:
 
 
 ## History log
-- 0.1 - basic functionality on SystemSettingHandler
-- 0.2 - Implements Cloud4All Communication
-- 0.3 - More fucntionality
+- 0.1 - Basic functionality on SystemSettingHandler.
+- 0.2 - Implements Cloud4All Communication.
+- 0.3 - More fucntionality.
+- 0.4 - Solve some Bugs and create Test Project.
 
 ## Bugs and decisions
 - Bug in notification Sound and Rigntone, sometimes don't get insert to media ContentProvider database the new file.
+- The Font-Scale is a feature which need to be changed all time because when there are a change in System Configuration, as the orientation, the font scale in GingerBread is reset. To solve this bug the SystemSettingHandlerPREICS launch a system alarm each a time and configure the font_scale.
+
 
 
