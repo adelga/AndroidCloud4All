@@ -76,11 +76,13 @@ Curently, SystemSettingParams can modify this params:
 
 
 ## History log
-- 0.1 - basic functionality on SystemSettingHandlerRoot
-- 0.2 - Implements Cloud4All Communication
-- 0.3 - More fucntionality
+- 0.1 - basic functionality on SystemSettingHandler.
+- 0.2 - Implements Cloud4All Communication.
+- 0.3 - Implements more configuration Params.
+- 0.4 - Solve Bugs and add Test Proyects.
 
 ## Bugs and decisions
-- Bug in some cache configurations.
+- For persistence configuration params as lock_sound or low_battery_sound is necesary reboot the device.
+- The tick_sound play two times when the file has been changed.
 
 
