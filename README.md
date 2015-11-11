@@ -1,10 +1,8 @@
 # Cloud4All Platform Android Implementation
 
-(Description, dependencies, how to compile, install, ... )
-
+Old Android architecture for Cloud4AllProject 
 ## Licence 
-(Link to local licence file to be added here.)
-
+BSD 3-Clause license, MIT License or Apache License 2.0.
 
 ## Funding Acknowledgement
 
