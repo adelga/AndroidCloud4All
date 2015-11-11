@@ -2,7 +2,6 @@
 
 Old Android architecture for Cloud4AllProject 
 ## Licence 
-BSD 3-Clause license, MIT License or Apache License 2.0.
 
 ## Funding Acknowledgement
 
